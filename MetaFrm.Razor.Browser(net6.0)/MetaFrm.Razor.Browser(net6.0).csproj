@@ -6,6 +6,21 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>MetaFrm.Razor.Browser</AssemblyName>
     <RootNamespace>MetaFrm.Razor.Browser</RootNamespace>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>MetaFrm.Razor.Browser.net6.0</PackageId>
+    <Title>Meta Framework Razor Browser</Title>
+    <Product>Meta Framework Razor Browser</Product>
+    <Version>6.0.0.1</Version>
+    <Authors>dsun</Authors>
+    <Company>Meta Framework</Company>
+    <Description>Meta Framework
+(Multi platform &amp; Meta management)</Description>
+    <Copyright>Copyright 2022. dsun all rights reserved.</Copyright>
+    <PackageProjectUrl>https://github.com/MetaFrm/MetaFrm.Razor.Browser</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MetaFrm/MetaFrm.Razor.Browser</RepositoryUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageTags>meta;framework;dotnet;maui;</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
@@ -60,6 +75,17 @@
     <None Remove="Shared\NavMenu1.razor.css" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="..\src\Shared\Error.razor.cs" Link="Shared\Error.razor.cs" />
+    <Compile Include="..\src\Shared\MainLayout.razor.cs" Link="Shared\MainLayout.razor.cs" />
+    <Compile Include="..\src\ViewModels\ErrorViewModel.cs" Link="ViewModels\ErrorViewModel.cs" />
+    <Compile Include="..\src\ViewModels\MainLayoutViewModel.cs" Link="ViewModels\MainLayoutViewModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="icon.ico" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <SupportedPlatform Include="browser" />
@@ -67,7 +93,6 @@
 
   <ItemGroup>
     <PackageReference Include="MetaFrm.Core.net6.0" Version="6.0.0.4" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.8" />
   </ItemGroup>
@@ -83,6 +108,13 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\js\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
