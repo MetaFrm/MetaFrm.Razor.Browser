@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.32804.182
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaFrm.Razor.Browser", "MetaFrm.Razor.Browser(net6.0)\MetaFrm.Razor.Browser.csproj", "{D0B5FB50-73A9-4578-B548-0725E65D3741}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{FBE5211F-9DD2-428D-94A5-53EDE48FC640}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{42A66263-43FC-4CC3-BD7B-4481875DDE35}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build.yml = .github\workflows\build.yml
+		.github\workflows\nuget.yml = .github\workflows\nuget.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7A11DB1D-8914-4474-86EC-48B7D10D78DC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ViewModels", "ViewModels", "{033F0EB5-8E06-4DF1-A577-C7CFA027E78E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{68DF4797-31D2-486D-B696-AC4F93EF4A6E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D0B5FB50-73A9-4578-B548-0725E65D3741}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0B5FB50-73A9-4578-B548-0725E65D3741}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0B5FB50-73A9-4578-B548-0725E65D3741}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0B5FB50-73A9-4578-B548-0725E65D3741}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{42A66263-43FC-4CC3-BD7B-4481875DDE35} = {FBE5211F-9DD2-428D-94A5-53EDE48FC640}
+		{033F0EB5-8E06-4DF1-A577-C7CFA027E78E} = {7A11DB1D-8914-4474-86EC-48B7D10D78DC}
+		{68DF4797-31D2-486D-B696-AC4F93EF4A6E} = {7A11DB1D-8914-4474-86EC-48B7D10D78DC}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B2DF2FE5-3DB6-4562-9212-87D1DB1CBEED}
+	EndGlobalSection
+EndGlobal

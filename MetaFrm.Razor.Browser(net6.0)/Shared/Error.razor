@@ -1,0 +1,22 @@
+﻿@using MetaFrm.Control
+@inherits BaseComponent
+
+<h1 class="text-danger">Error.</h1>
+
+@if (this.ErrorViewModel != null && this.ErrorViewModel.IsDebug)
+{
+    <h2 class="text-danger">An error occurred while processing your request.</h2>
+    <p>
+        <strong>Message(@DateTime.Now.ToString("yyyy-MM-dd HH:mm")) : </strong> <code>@this.ErrorViewModel?.Message</code>
+    </p>
+    <div class="mb-3">
+        <textarea class="form-control textarea" rows="30" disabled readonly>@this.ErrorViewModel?.ExceptionToString</textarea>
+    </div>
+}
+else
+{
+    <h2 class="text-danger">An error was encountered. Please contact your system administrator.</h2>
+    <p class="mt-4">
+        <strong>Message(@DateTime.Now.ToString("yyyy-MM-dd HH:mm")) : </strong> <code>@this.ErrorViewModel?.Message</code>
+    </p>
+}
