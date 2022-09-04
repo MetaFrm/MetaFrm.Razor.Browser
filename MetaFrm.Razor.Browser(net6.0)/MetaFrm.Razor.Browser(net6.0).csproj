@@ -11,7 +11,7 @@
     <PackageId>MetaFrm.Razor.Browser.net6.0</PackageId>
     <Title>Meta Framework Razor Browser</Title>
     <Product>Meta Framework Razor Browser</Product>
-    <Version>6.0.0.3</Version>
+    <Version>6.0.0.4</Version>
     <Authors>dsun</Authors>
     <Company>Meta Framework</Company>
     <Description>Meta Framework
@@ -21,21 +21,35 @@
     <RepositoryUrl>https://github.com/MetaFrm/MetaFrm.Razor.Browser</RepositoryUrl>
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>meta;framework;dotnet;maui;</PackageTags>
+	
+	<SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ss:fffZ"))</SourceRevisionId>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\**" />
+    <Compile Remove="Shared\**" />
+    <Compile Remove="ViewModels\**" />
     <Compile Remove="wwwroot\css\bootstrap\cerulean\**" />
     <Compile Remove="wwwroot\css\bootstrap\cerulean_20220811\**" />
     <Compile Remove="wwwroot\css\bootstrap\superhero\**" />
     <Compile Remove="wwwroot\css\bootstrap\superhero_20220811\**" />
+    <Content Remove="Pages\**" />
+    <Content Remove="Shared\**" />
+    <Content Remove="ViewModels\**" />
     <Content Remove="wwwroot\css\bootstrap\cerulean\**" />
     <Content Remove="wwwroot\css\bootstrap\cerulean_20220811\**" />
     <Content Remove="wwwroot\css\bootstrap\superhero\**" />
     <Content Remove="wwwroot\css\bootstrap\superhero_20220811\**" />
+    <EmbeddedResource Remove="Pages\**" />
+    <EmbeddedResource Remove="Shared\**" />
+    <EmbeddedResource Remove="ViewModels\**" />
     <EmbeddedResource Remove="wwwroot\css\bootstrap\cerulean\**" />
     <EmbeddedResource Remove="wwwroot\css\bootstrap\cerulean_20220811\**" />
     <EmbeddedResource Remove="wwwroot\css\bootstrap\superhero\**" />
     <EmbeddedResource Remove="wwwroot\css\bootstrap\superhero_20220811\**" />
+    <None Remove="Pages\**" />
+    <None Remove="Shared\**" />
+    <None Remove="ViewModels\**" />
     <None Remove="wwwroot\css\bootstrap\cerulean\**" />
     <None Remove="wwwroot\css\bootstrap\cerulean_20220811\**" />
     <None Remove="wwwroot\css\bootstrap\superhero\**" />
@@ -45,41 +59,16 @@
   <ItemGroup>
     <Compile Remove="ExampleJsInterop.cs" />
     <Compile Remove="MainLayoutViewModel.cs" />
-    <Compile Remove="Pages\Error.cshtml.cs" />
-    <Compile Remove="Pages\Home.razor.cs" />
-    <Compile Remove="Shared\Login.razor.cs" />
-    <Compile Remove="Shared\Logout.razor.cs" />
-    <Compile Remove="ViewModels\DefaultBrowserViewModel.cs" />
-    <Compile Remove="ViewModels\LoginViewModel.cs" />
-    <Compile Remove="ViewModels\LogoutViewModel.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="Modal.razor" />
-    <Content Remove="Pages\Error.cshtml" />
-    <Content Remove="Pages\Home.razor" />
-    <Content Remove="Pages\_Host.cshtml" />
-    <Content Remove="Pages\_Layout.cshtml" />
-    <Content Remove="Shared\Login.razor" />
-    <Content Remove="Shared\Logout.razor" />
-    <Content Remove="Shared\NavMenu.razor" />
-    <Content Remove="Shared\NavMenu1.razor" />
-    <Content Remove="Shared\Toast.razor" />
     <Content Remove="wwwroot\background.png" />
     <Content Remove="wwwroot\exampleJsInterop.js" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="DefaultBrowser.razor.css" />
-    <None Remove="Shared\MainLayout.razor.css" />
-    <None Remove="Shared\NavMenu1.razor.css" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="..\src\Shared\Error.razor.cs" Link="Shared\Error.razor.cs" />
-    <Compile Include="..\src\Shared\MainLayout.razor.cs" Link="Shared\MainLayout.razor.cs" />
-    <Compile Include="..\src\ViewModels\ErrorViewModel.cs" Link="ViewModels\ErrorViewModel.cs" />
-    <Compile Include="..\src\ViewModels\MainLayoutViewModel.cs" Link="ViewModels\MainLayoutViewModel.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -92,7 +81,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MetaFrm.Core.net6.0" Version="6.0.0.5" />
+    <PackageReference Include="MetaFrm.Razor.BrowserRoot.net6.0" Version="6.0.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.8" />
   </ItemGroup>
