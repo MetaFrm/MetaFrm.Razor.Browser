@@ -107,93 +107,27 @@ namespace MetaFrm.Razor.Browser.Shared
                     case "Menu":
                         if (e.Value is List<int> pairs)
                         {
+                            object? debugInfo;
                             TypeTitle? typeTitle;
-
-#if DEBUG
                             Type? type = null;
-                            switch (pairs[1])
+
+                            debugInfo = Client.GetAttribute("DebugDLL");
+
+                            if (debugInfo != null && debugInfo is Dictionary<int, Type> debugInfoDictionary)
                             {
-                                //case 2:
-                                //    type = typeof(C001);
-                                //    break;
-                                //case 3:
-                                //    type = typeof(C002);
-                                //    break;
-                                //case 5:
-                                //    type = typeof(C003);
-                                //    break;
-                                //case 6:
-                                //    type = typeof(C004);
-                                //    break;
-                                //case 7:
-                                //    type = typeof(C005);
-                                //    break;
-                                //case 8:
-                                //    type = typeof(A001);
-                                //    break;
-                                //case 9:
-                                //    type = typeof(A002);
-                                //    break;
-                                //case 10:
-                                //    type = typeof(A003);
-                                //    break;
-                                //case 11:
-                                //    type = typeof(A004);
-                                //    break;
-                                //case 12:
-                                //    type = typeof(B001);
-                                //    break;
-                                //case 13:
-                                //    type = typeof(B002);
-                                //    break;
-                                //case 14:
-                                //    type = typeof(B003);
-                                //    break;
-                                //case 15:
-                                //    type = typeof(B004);
-                                //    break;
+                                if (debugInfoDictionary.ContainsKey(pairs[1]))
+                                    type = debugInfoDictionary[pairs[1]];
                             }
 
-                            //MetaFrm.Razor.Browser.App
-
-                            if (type != null)
-                            {
-                                typeTitle = await LoadAssembly(pairs[0], pairs[1], type);
-
-                                if (typeTitle != null)
-                                {
-                                    this.MainLayoutViewModel.TmpBrowserType = type;
-                                    this.MainLayoutViewModel.Title = $"{typeTitle.Title} ({this.MainLayoutViewModel.TmpBrowserType?.Assembly.GetName().Version})";
-                                }
-                            }
-                            else
-                            {
-                                typeTitle = await LoadAssembly(pairs[0], pairs[1]);
-
-                                if (typeTitle != null)
-                                {
-                                    this.MainLayoutViewModel.TmpBrowserType = typeTitle.Type;
-                                    this.MainLayoutViewModel.Title = $"{typeTitle.Title} ({this.MainLayoutViewModel.TmpBrowserType?.Assembly.GetName().Version})";
-                                }
-                            }
-#else
-                            typeTitle = await LoadAssembly(pairs[0], pairs[1]);
+                            typeTitle = await LoadAssembly(pairs[0], pairs[1], type);
 
                             if (typeTitle != null)
                             {
-                                this.MainLayoutViewModel.TmpBrowserType = typeTitle.Type;
+                                this.MainLayoutViewModel.TmpBrowserType = type ?? typeTitle.Type;
                                 this.MainLayoutViewModel.Title = $"{typeTitle.Title} ({this.MainLayoutViewModel.TmpBrowserType?.Assembly.GetName().Version})";
                             }
-#endif
                         }
 
-                        break;
-
-                    case "About":
-                        this.MainLayoutViewModel.TmpBrowserType = Factory.LoadTypeFromServiceAttribut("About");
-                        //this.MainLayoutViewModel.TmpBrowserType = typeof(Counter);
-
-                        this.MainLayoutViewModel.Title = $"{e.Action} ({this.MainLayoutViewModel.TmpBrowserType?.Assembly.GetName().Version})";
                         break;
 
 
@@ -224,15 +158,6 @@ namespace MetaFrm.Razor.Browser.Shared
 
                         this.MainLayoutViewModel.Title = $"{e.Action} ({this.MainLayoutViewModel.TmpBrowserType?.Assembly.GetName().Version})";
                         break;
-
-                    case "StyleChange":
-                        this.MainLayoutViewModel.TestBool = !this.MainLayoutViewModel.TestBool;
-
-                        if (this.LocalStorage != null)
-                            await this.LocalStorage.SetItemAsync(nameof(this.MainLayoutViewModel) + nameof(this.MainLayoutViewModel.TestBool), this.MainLayoutViewModel.TestBool);
-
-                        this.StateHasChanged();
-                        return;
                 }
             }
             catch (Exception ex)
@@ -250,12 +175,13 @@ namespace MetaFrm.Razor.Browser.Shared
             this.StateHasChanged();
         }
 
-        private async Task<TypeTitle?> LoadAssembly(int MENU_ID, int ASSEMBLY_ID, Type? isDebug = null)
+        private async Task<TypeTitle?> LoadAssembly(int MENU_ID, int ASSEMBLY_ID, Type? debugType = null)
         {
             Response response;
             Type? type;
             string? commandText;
             string? tmp;
+            string token;
             string? title;
             string? description;
 
@@ -269,56 +195,41 @@ namespace MetaFrm.Razor.Browser.Shared
 
                 ServiceData serviceData;
 
+
                 if (this.IsLogin())
                 {
-                    serviceData = new()
-                    {
-                        ServiceName = Factory.ProjectService.ServiceNamespace ?? "",
-                        TransactionScope = false,
-                        Token = this.UserClaim("Token")
-                    };
-
+                    token = this.UserClaim("Token");
                     commandText = Factory.ProjectService.GetAttributeValue("Select.Assembly");
-                    if (commandText != null) serviceData["1"].CommandText = commandText;
-
-                    if (MENU_ID == 0 && ASSEMBLY_ID == 0)
-                    {
-                        tmp = Factory.ProjectService.GetAttributeValue("Select.AssemblyHome");
-
-                        if (tmp != null && !tmp.IsNullOrEmpty())
-                        {
-                            MENU_ID = tmp.Split(',')[0].ToInt();
-                            ASSEMBLY_ID = tmp.Split(',')[1].ToInt();
-                        }
-                    }
-                    serviceData["1"].AddParameter("MENU_ID", DbType.Int, 3, MENU_ID);
-                    serviceData["1"].AddParameter("ASSEMBLY_ID", DbType.Int, 3, ASSEMBLY_ID);
-                    serviceData["1"].AddParameter("USER_ID", DbType.Int, 3, this.UserClaim("Account.USER_ID").ToInt());
                 }
                 else
                 {
-                    serviceData = new()
-                    {
-                        ServiceName = Factory.ProjectService.ServiceNamespace ?? "",
-                        TransactionScope = false,
-                        Token = Factory.AccessKey
-                    };
+                    token = Factory.AccessKey;
                     commandText = Factory.ProjectService.GetAttributeValue("Select.AssemblyDefault");
-                    if (commandText != null) serviceData["1"].CommandText = commandText;
-
-                    if (MENU_ID == 0 && ASSEMBLY_ID == 0)
-                    {
-                        tmp = Factory.ProjectService.GetAttributeValue("Select.AssemblyHome");
-
-                        if (tmp != null && !tmp.IsNullOrEmpty())
-                        {
-                            MENU_ID = tmp.Split(',')[0].ToInt();
-                            ASSEMBLY_ID = tmp.Split(',')[1].ToInt();
-                        }
-                    }
-                    serviceData["1"].AddParameter("MENU_ID", DbType.Int, 3, MENU_ID);
-                    serviceData["1"].AddParameter("ASSEMBLY_ID", DbType.Int, 3, ASSEMBLY_ID);
                 }
+
+                if (MENU_ID == 0 && ASSEMBLY_ID == 0)
+                {
+                    tmp = Factory.ProjectService.GetAttributeValue("Select.AssemblyHome");
+
+                    if (tmp != null && !tmp.IsNullOrEmpty())
+                    {
+                        MENU_ID = tmp.Split(',')[0].ToInt();
+                        ASSEMBLY_ID = tmp.Split(',')[1].ToInt();
+                    }
+                }
+
+                serviceData = new()
+                {
+                    ServiceName = Factory.ProjectService.ServiceNamespace ?? "",
+                    TransactionScope = false,
+                    Token = token
+                };
+                if (commandText != null) serviceData["1"].CommandText = commandText;
+                serviceData["1"].AddParameter("MENU_ID", DbType.Int, 3, MENU_ID);
+                serviceData["1"].AddParameter("ASSEMBLY_ID", DbType.Int, 3, ASSEMBLY_ID);
+
+                if (this.IsLogin())
+                    serviceData["1"].AddParameter("USER_ID", DbType.Int, 3, this.UserClaim("Account.USER_ID").ToInt());
 
                 response = await this.ServiceRequestAsync(serviceData);
 
@@ -331,10 +242,10 @@ namespace MetaFrm.Razor.Browser.Shared
 
                         if (NAMESPACE != null && FILE_TEXT != null)
                         {
-                            if (isDebug == null)
+                            if (debugType == null)
                                 type = Factory.LoadType(NAMESPACE, Convert.FromBase64String(FILE_TEXT), true);
                             else
-                                type = isDebug;
+                                type = debugType;
                             title = response.DataSet.DataTables[0].DataRows[0].String("NAME");
                             description = response.DataSet.DataTables[0].DataRows[0].String("DESCRIPTION");
                         }
