@@ -15,6 +15,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7A11DB1D-8914-4474-86EC-48B7D10D78DC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ViewModels", "ViewModels", "{033F0EB5-8E06-4DF1-A577-C7CFA027E78E}"
+	ProjectSection(SolutionItems) = preProject
+		src\ViewModels\ErrorViewModel.cs = src\ViewModels\ErrorViewModel.cs
+		src\ViewModels\MainLayoutViewModel.cs = src\ViewModels\MainLayoutViewModel.cs
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{68DF4797-31D2-486D-B696-AC4F93EF4A6E}"
+	ProjectSection(SolutionItems) = preProject
+		src\Shared\Error.razor.cs = src\Shared\Error.razor.cs
+		src\Shared\MainLayout.razor.cs = src\Shared\MainLayout.razor.cs
+	EndProjectSection
+EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "솔루션 항목", "솔루션 항목", "{7329D81E-D714-40D7-B0BC-06675F347029}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
@@ -38,6 +50,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{42A66263-43FC-4CC3-BD7B-4481875DDE35} = {FBE5211F-9DD2-428D-94A5-53EDE48FC640}
+		{033F0EB5-8E06-4DF1-A577-C7CFA027E78E} = {7A11DB1D-8914-4474-86EC-48B7D10D78DC}
+		{68DF4797-31D2-486D-B696-AC4F93EF4A6E} = {7A11DB1D-8914-4474-86EC-48B7D10D78DC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B2DF2FE5-3DB6-4562-9212-87D1DB1CBEED}
