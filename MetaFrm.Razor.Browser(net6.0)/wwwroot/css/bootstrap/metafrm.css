@@ -31,8 +31,13 @@
     --bs-toast-border-radius: var(--bs-border-radius-sm);
 }
 
+.shadow-lg-90 {
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.9) !important;
+}
+
 .modal {
     --bs-modal-border-radius: var(--bs-border-radius-sm);
+    --bs-modal-padding: 0.3rem;
 }
 
 .card {
