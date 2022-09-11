@@ -37,7 +37,7 @@
 
 .modal {
     --bs-modal-border-radius: var(--bs-border-radius-sm);
-    --bs-modal-padding: 0.3rem;
+    --bs-modal-padding: 0.2rem;
 }
 
 .card {

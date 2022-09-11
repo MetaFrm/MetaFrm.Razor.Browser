@@ -130,31 +130,22 @@ namespace MetaFrm.Razor.Browser.Shared
 
                         break;
 
+                    default:
+                        this.MainLayoutViewModel.TmpBrowserType = Factory.LoadTypeFromServiceAttribut(e.Action);
 
-                    case "Login":
-                        this.MainLayoutViewModel.TmpBrowserType = Factory.LoadTypeFromServiceAttribut("Login");
-                        //this.MainLayoutViewModel.TmpBrowserType = typeof(MetaFrm.Razor.Login);
-
-                        this.MainLayoutViewModel.Title = $"{e.Action} ({this.MainLayoutViewModel.TmpBrowserType?.Assembly.GetName().Version})";
-                        break;
-
-                    case "Logout":
-                        this.MainLayoutViewModel.TmpBrowserType = Factory.LoadTypeFromServiceAttribut("Logout");
-                        //this.MainLayoutViewModel.TmpBrowserType = typeof(MetaFrm.Razor.Logout);
-
-                        this.MainLayoutViewModel.Title = $"{e.Action} ({this.MainLayoutViewModel.TmpBrowserType?.Assembly.GetName().Version})";
-                        break;
-
-                    case "Register":
-                        this.MainLayoutViewModel.TmpBrowserType = Factory.LoadTypeFromServiceAttribut("Register");
-                        //this.MainLayoutViewModel.TmpBrowserType = typeof(MetaFrm.Razor.Register);
-
-                        this.MainLayoutViewModel.Title = $"{e.Action} ({this.MainLayoutViewModel.TmpBrowserType?.Assembly.GetName().Version})";
-                        break;
-
-                    case "PasswordReset":
-                        this.MainLayoutViewModel.TmpBrowserType = Factory.LoadTypeFromServiceAttribut("PasswordReset");
-                        //this.MainLayoutViewModel.TmpBrowserType = typeof(MetaFrm.Razor.PasswordReset);
+                        //switch (e.Action)
+                        //{
+                        //    case "Login":
+                        //        this.MainLayoutViewModel.TmpBrowserType = typeof(MetaFrm.Razor.Login); break;
+                        //    case "Logout":
+                        //        this.MainLayoutViewModel.TmpBrowserType = typeof(MetaFrm.Razor.Logout); break;
+                        //    case "Profile":
+                        //        this.MainLayoutViewModel.TmpBrowserType = typeof(MetaFrm.Razor.Profile); break;
+                        //    case "Register":
+                        //        this.MainLayoutViewModel.TmpBrowserType = typeof(MetaFrm.Razor.Register); break;
+                        //    case "PasswordReset"
+                        //        this.MainLayoutViewModel.TmpBrowserType = typeof(MetaFrm.Razor.PasswordReset); break;
+                        //}
 
                         this.MainLayoutViewModel.Title = $"{e.Action} ({this.MainLayoutViewModel.TmpBrowserType?.Assembly.GetName().Version})";
                         break;
