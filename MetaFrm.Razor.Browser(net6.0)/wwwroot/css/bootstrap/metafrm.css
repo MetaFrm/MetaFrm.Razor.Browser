@@ -4,6 +4,10 @@
     --bs-border-radius-lg: 0.5rem;
 }
 
+body {
+    padding-top: 56px;
+}
+
 .btn {
     --bs-btn-border-radius: 0.25rem;
 }
