@@ -131,7 +131,8 @@ namespace MetaFrm.Razor.Browser.Shared
                         break;
 
                     default:
-                        this.MainLayoutViewModel.TmpBrowserType = Factory.LoadTypeFromServiceAttribut(e.Action);
+                        if (e.Action != null)
+                            this.MainLayoutViewModel.TmpBrowserType = Factory.LoadTypeFromServiceAttribut(e.Action);
 
                         //switch (e.Action)
                         //{
