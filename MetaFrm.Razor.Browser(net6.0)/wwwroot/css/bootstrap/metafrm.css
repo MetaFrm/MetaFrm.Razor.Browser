@@ -44,6 +44,29 @@ body {
     --bs-modal-padding: 0.2rem;
 }
 
+@media (min-width: 576px) {
+    .modal {
+        --bs-modal-padding: 0.2rem;
+    }
+    .modal-dialog {
+        --bs-modal-padding: 0.2rem;
+    }
+    .modal-sm {
+        --bs-modal-padding: 0.2rem;
+    }
+}
+@media (min-width: 992px) {
+    .modal-lg,
+    .modal-xl {
+        --bs-modal-padding: 1.75rem;
+    }
+}
+@media (min-width: 1200px) {
+    .modal-xl {
+        --bs-modal-padding: 1.75rem;
+    }
+}
+
 .card {
     --bs-card-border-radius: var(--bs-border-radius-sm);
     --bs-card-inner-border-radius: var(--bs-border-radius-sm);
