@@ -44,6 +44,16 @@ body {
     --bs-modal-padding: 0.2rem;
 }
 
+.modal-header {
+    border-top-left-radius: var(--bs-border-radius-sm);
+    border-top-right-radius: var(--bs-border-radius-sm);
+}
+
+.modal-footer {
+    border-bottom-left-radius: var(--bs-border-radius-sm);
+    border-bottom-right-radius: var(--bs-border-radius-sm);
+}
+
 @media (min-width: 576px) {
     .modal {
         --bs-modal-padding: 0.2rem;
