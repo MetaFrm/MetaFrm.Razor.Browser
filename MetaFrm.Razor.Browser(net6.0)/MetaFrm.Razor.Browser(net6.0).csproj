@@ -11,12 +11,12 @@
     <PackageId>MetaFrm.Razor.Browser.net6.0</PackageId>
     <Title>Meta Framework Razor Browser</Title>
     <Product>Meta Framework Razor Browser</Product>
-    <Version>6.0.0.18</Version>
+    <Version>6.0.0.25</Version>
     <Authors>dsun</Authors>
     <Company>Meta Framework</Company>
     <Description>Meta Framework
 (Multi platform &amp; Meta management)</Description>
-    <Copyright>Copyright 2022. dsun all rights reserved.</Copyright>
+    <Copyright>Copyright 2023. dsun all rights reserved.</Copyright>
     <PackageProjectUrl>https://github.com/MetaFrm/MetaFrm.Razor.Browser</PackageProjectUrl>
     <RepositoryUrl>https://github.com/MetaFrm/MetaFrm.Razor.Browser</RepositoryUrl>
     <PackageIcon>icon.png</PackageIcon>
@@ -92,9 +92,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MetaFrm.Core.net6.0" Version="6.0.0.18" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.9" />
+    <PackageReference Include="MetaFrm.Core.net6.0" Version="6.0.0.25" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.16" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.16" />
   </ItemGroup>
 
   <ItemGroup>
