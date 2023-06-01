@@ -219,6 +219,10 @@ namespace MetaFrm.Razor.Browser.Shared
                         //        this.MainLayoutViewModel.TmpBrowserType = typeof(MetaFrm.Razor.Register); break;
                         //    case "PasswordReset"
                         //        this.MainLayoutViewModel.TmpBrowserType = typeof(MetaFrm.Razor.PasswordReset); break;
+                        //    default:
+                        //        if (e.Action != null)
+                        //            this.MainLayoutViewModel.TmpBrowserType = Factory.LoadTypeFromServiceAttribut(e.Action);
+                        //        break;
                         //}
 
                         this.MainLayoutViewModel.Title = $"{e.Action} ({this.MainLayoutViewModel.TmpBrowserType?.Assembly.GetName().Version})";
