@@ -7,14 +7,21 @@ using MetaFrm.Maui.Devices;
 using MetaFrm.Service;
 using MetaFrm.Web.Bootstrap;
 using Microsoft.AspNetCore.Components;
+using System.Diagnostics;
 
 namespace MetaFrm.Razor.Browser.Shared
 {
-    public partial class MainLayout
+    public partial class MainLayout : IDisposable
     {
         internal MainLayoutViewModel MainLayoutViewModel { get; set; } = Factory.CreateViewModel<MainLayoutViewModel>();
 
         private bool isFirstLoad = true;
+
+        [Inject]
+        protected NavigationManager? Navigation { get; set; }
+
+        [Inject]
+        private Maui.Notification.ICloudMessaging? CloudMessaging { get; set; }
 
         protected override void OnAfterRender(bool firstRender)
         {
@@ -35,10 +42,16 @@ namespace MetaFrm.Razor.Browser.Shared
                     action1.Action += MainLayout_Begin;
                 }
 
-                this.LoadLocalStorage();
+                //this.LoadLocalStorage();
 
                 if (Factory.Platform != DevicePlatform.Web)
                     this.HomeLoad();
+
+                if (this.CloudMessaging != null)
+                {
+                    this.CloudMessaging.NotificationTappedEvent -= CloudMessaging_NotificationTappedEvent;
+                    this.CloudMessaging.NotificationTappedEvent += CloudMessaging_NotificationTappedEvent;
+                }
             }
             else
             {
@@ -56,26 +69,86 @@ namespace MetaFrm.Razor.Browser.Shared
             }
         }
 
-        private async void LoadLocalStorage()
+#pragma warning disable CA1816 // Dispose 메서드는 SuppressFinalize를 호출해야 합니다.
+        public void Dispose()
+#pragma warning restore CA1816 // Dispose 메서드는 SuppressFinalize를 호출해야 합니다.
         {
-            if (this.LocalStorage != null)
-            {
-                bool testBool = await this.LocalStorage.GetItemAsync<bool>(nameof(this.MainLayoutViewModel) + nameof(this.MainLayoutViewModel.TestBool));
+            if (this.CloudMessaging != null)
+                this.CloudMessaging.NotificationTappedEvent -= CloudMessaging_NotificationTappedEvent;
+        }
 
-                if (this.MainLayoutViewModel.TestBool != testBool)
+        private void CloudMessaging_NotificationTappedEvent(object sender, Maui.Notification.NotificationTappedEventArgs e)
+        {
+            if (e.NotificationData.Data != null)
+            {
+                try
                 {
-                    this.MainLayoutViewModel.TestBool = testBool;
-                    this.StateHasChanged();
+                    if (e.NotificationData.Data.ContainsKey("Menu") && e.NotificationData.Data["Menu"].Contains(','))
+                    {
+                        Task.Run(async delegate
+                        {
+                            Client.SetAttribute("Menu", e.NotificationData.Data["Menu"]);
+
+                            if (e.NotificationData.Data.ContainsKey("Search"))
+                                Client.SetAttribute("Search", e.NotificationData.Data["Search"]);
+
+                            await Task.Delay(TimeSpan.FromSeconds(2));
+
+                            //Factory.ViewModelClear();
+                            if (Client.GetAttribute("Menu") != null)
+                                this.Navigation?.NavigateTo("/", true);
+                        });
+                    }
+                }
+                catch (Exception)
+                {
                 }
             }
         }
 
+        //private async void LoadLocalStorage()
+        //{
+        //    //if (this.LocalStorage != null)
+        //    //{
+        //    //    bool testBool = await this.LocalStorage.GetItemAsync<bool>(nameof(this.MainLayoutViewModel) + nameof(this.MainLayoutViewModel.TestBool));
+
+        //    //    if (this.MainLayoutViewModel.TestBool != testBool)
+        //    //    {
+        //    //        this.MainLayoutViewModel.TestBool = testBool;
+        //    //        this.StateHasChanged();
+        //    //    }
+        //    //}
+        //}
+
         private void HomeLoad()
         {
+            object? obj;
+            string[] tmps;
+
             if (this.isFirstLoad)
             {
                 this.isFirstLoad = false;
-                this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { 0, 0 } });
+
+                obj = Client.GetAttribute("Menu");
+
+                if (obj != null && obj is string tmp && tmp.Contains(','))
+                {
+                    if (!this.IsLogin())
+                    {
+                        this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Login" });
+                    }
+                    else
+                    {
+                        Client.RemoveAttribute("Menu");
+                        tmps = tmp.Split(",");
+                        this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { tmps[0].ToInt(), tmps[1].ToInt() } });
+                    }
+                }
+                else
+                {
+                    this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { 0, 0 } });
+                }
+
                 this.StateHasChanged();
             }
         }
