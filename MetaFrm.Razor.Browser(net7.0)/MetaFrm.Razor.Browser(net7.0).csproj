@@ -1,17 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>MetaFrm.Razor.Browser</AssemblyName>
     <RootNamespace>MetaFrm.Razor.Browser</RootNamespace>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageId>MetaFrm.Razor.Browser.net6.0</PackageId>
+    <PackageId>MetaFrm.Razor.Browser.net7.0</PackageId>
     <Title>Meta Framework Razor Browser</Title>
     <Product>Meta Framework Razor Browser</Product>
-    <Version>6.0.0.33</Version>
+    <Version>7.0.0.0</Version>
     <Authors>dsun</Authors>
     <Company>Meta Framework</Company>
     <Description>Meta Framework
@@ -92,9 +92,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MetaFrm.Core.net6.0" Version="6.0.0.33" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.16" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.16" />
+    <PackageReference Include="MetaFrm.Core.net7.0" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.5" />
   </ItemGroup>
 
   <ItemGroup>
