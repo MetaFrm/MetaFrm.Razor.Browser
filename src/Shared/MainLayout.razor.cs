@@ -132,12 +132,16 @@ namespace MetaFrm.Razor.Browser.Shared
                     {
                         Task.Run(async delegate
                         {
-                            Client.SetAttribute("Menu", e.NotificationData.Data["Menu"]);
+                            string tmp = e.NotificationData.Data["Menu"];
 
-                            if (e.NotificationData.Data.ContainsKey("Search"))
-                                Client.SetAttribute("Search", e.NotificationData.Data["Search"]);
+                            Client.SetAttribute("Menu", tmp);//"MENU_ID,ASSEMBLY_ID"
 
-                            await Task.Delay(TimeSpan.FromSeconds(2));
+                            tmp = tmp.Split(',')[1];//ASSEMBLY_ID
+
+                            foreach (var item in e.NotificationData.Data.Keys)
+                                Client.SetAttribute($"{tmp}.{item}", e.NotificationData.Data[item]);
+
+                            await Task.Delay(TimeSpan.FromSeconds(1.6));
 
                             //Factory.ViewModelClear();
                             if (Client.GetAttribute("Menu") != null)
@@ -396,6 +400,8 @@ namespace MetaFrm.Razor.Browser.Shared
                                     Client.SetAttribute(type, ATTRIBUTE_NAME, ATTRIBUTE_VALUE);
                             }
 
+                            Client.SetAttribute(type, "MENU_ID", MENU_ID.ToString());
+                            Client.SetAttribute(type, "ASSEMBLY_ID", ASSEMBLY_ID.ToString());
                             Client.SetAttribute(type, "Title", title ?? "");
                             Client.SetAttribute(type, "Description", description ?? "");
 
