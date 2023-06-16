@@ -7,7 +7,6 @@ using MetaFrm.Maui.Devices;
 using MetaFrm.Service;
 using MetaFrm.Web.Bootstrap;
 using Microsoft.AspNetCore.Components;
-using System.Diagnostics;
 
 namespace MetaFrm.Razor.Browser.Shared
 {
@@ -17,11 +16,23 @@ namespace MetaFrm.Razor.Browser.Shared
 
         private bool isFirstLoad = true;
 
+        private List<MetaFrmEventArgs> Navigationqueue = new();
+
         [Inject]
         protected NavigationManager? Navigation { get; set; }
 
         [Inject]
         private Maui.Notification.ICloudMessaging? CloudMessaging { get; set; }
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+
+            if (Navigation != null)
+            {
+                this.Navigation.LocationChanged += Navigation_LocationChanged;
+            }
+        }
 
         protected override void OnAfterRender(bool firstRender)
         {
@@ -69,12 +80,32 @@ namespace MetaFrm.Razor.Browser.Shared
             }
         }
 
+        private void Navigation_LocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+        {
+            if (!e.IsNavigationIntercepted && this.Navigationqueue.Count > 0)
+            {
+                MetaFrmEventArgs metaFrmEventArgs = this.Navigationqueue[this.Navigationqueue.Count - 1];
+                if (metaFrmEventArgs.Value is List<int> pairs)
+                {
+                    pairs.Add(-1);
+                    this.Navigationqueue.Remove(metaFrmEventArgs);
+                    this.MainLayout_Begin(this, metaFrmEventArgs);
+                }
+            }
+        }
+
 #pragma warning disable CA1816 // Dispose 메서드는 SuppressFinalize를 호출해야 합니다.
         public void Dispose()
 #pragma warning restore CA1816 // Dispose 메서드는 SuppressFinalize를 호출해야 합니다.
         {
             if (this.CloudMessaging != null)
                 this.CloudMessaging.NotificationTappedEvent -= CloudMessaging_NotificationTappedEvent;
+
+            if (Navigation != null)
+            {
+                this.Navigation.LocationChanged -= Navigation_LocationChanged;
+                this.Navigationqueue.Clear();
+            }
         }
 
         private void CloudMessaging_NotificationTappedEvent(object sender, Maui.Notification.NotificationTappedEventArgs e)
@@ -198,6 +229,25 @@ namespace MetaFrm.Razor.Browser.Shared
                             {
                                 this.MainLayoutViewModel.TmpBrowserType = type ?? typeTitle.Type;
                                 this.MainLayoutViewModel.Title = $"{typeTitle.Title} ({this.MainLayoutViewModel.TmpBrowserType?.Assembly.GetName().Version})";
+                            }
+
+                            if (pairs.Count < 3)
+                                this.Navigationqueue.Add(e);
+
+                            if (this.Navigationqueue.Count > 0)
+                            {
+                                switch (Factory.Platform)
+                                {
+                                    case DevicePlatform.Web:
+                                        if (this.Navigationqueue.Count > 20)
+                                            this.Navigationqueue.Remove(this.Navigationqueue[0]);
+                                        break;
+
+                                    default:
+                                        if (this.Navigationqueue.Count > 50)
+                                            this.Navigationqueue.Remove(this.Navigationqueue[0]);
+                                        break;
+                                }
                             }
                         }
 
