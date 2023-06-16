@@ -80,11 +80,23 @@ namespace MetaFrm.Razor.Browser.Shared
             }
         }
 
+        bool firstIsNavigationIntercepted = true;
         private void Navigation_LocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
         {
             if (!e.IsNavigationIntercepted && this.Navigationqueue.Count > 0)
             {
+                //앞으로 가다가 처음 뒤로 가기 이면 마지막에 있는 항목은 현재 화면이기 때문에 현재 화면을 제거 한다.
+                if (this.firstIsNavigationIntercepted)
+                {
+                    this.firstIsNavigationIntercepted = false;
+
+                    if (this.Navigationqueue.Count > 1)
+                        this.Navigationqueue.Remove(this.Navigationqueue[this.Navigationqueue.Count - 1]);
+                }
+
                 MetaFrmEventArgs metaFrmEventArgs = this.Navigationqueue[this.Navigationqueue.Count - 1];
+
+
                 if (metaFrmEventArgs.Value is List<int> pairs)
                 {
                     pairs.Add(-1);
@@ -92,6 +104,8 @@ namespace MetaFrm.Razor.Browser.Shared
                     this.MainLayout_Begin(this, metaFrmEventArgs);
                 }
             }
+            else
+                this.firstIsNavigationIntercepted = true;
         }
 
 #pragma warning disable CA1816 // Dispose 메서드는 SuppressFinalize를 호출해야 합니다.
