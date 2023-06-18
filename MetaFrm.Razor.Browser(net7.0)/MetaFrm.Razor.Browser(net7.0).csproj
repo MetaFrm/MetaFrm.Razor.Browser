@@ -11,7 +11,7 @@
     <PackageId>MetaFrm.Razor.Browser.net7.0</PackageId>
     <Title>Meta Framework Razor Browser</Title>
     <Product>Meta Framework Razor Browser</Product>
-    <Version>7.0.0.4</Version>
+    <Version>7.0.0.5</Version>
     <Authors>dsun</Authors>
     <Company>Meta Framework</Company>
     <Description>Meta Framework
@@ -92,9 +92,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MetaFrm.Core.net7.0" Version="7.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.5" />
+    <PackageReference Include="MetaFrm.Core.net7.0" Version="7.0.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.7" />
   </ItemGroup>
 
   <ItemGroup>

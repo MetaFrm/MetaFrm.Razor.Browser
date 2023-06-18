@@ -16,7 +16,7 @@ namespace MetaFrm.Razor.Browser.Shared
 
         private bool isFirstLoad = true;
 
-        private List<MetaFrmEventArgs> Navigationqueue = new();
+        private readonly List<MetaFrmEventArgs> Navigationqueue = new();
 
         [Inject]
         protected NavigationManager? Navigation { get; set; }
@@ -91,10 +91,10 @@ namespace MetaFrm.Razor.Browser.Shared
                     this.firstIsNavigationIntercepted = false;
 
                     if (this.Navigationqueue.Count > 1)
-                        this.Navigationqueue.Remove(this.Navigationqueue[this.Navigationqueue.Count - 1]);
+                        this.Navigationqueue.Remove(this.Navigationqueue[^1]);
                 }
 
-                MetaFrmEventArgs metaFrmEventArgs = this.Navigationqueue[this.Navigationqueue.Count - 1];
+                MetaFrmEventArgs metaFrmEventArgs = this.Navigationqueue[^1];
 
 
                 if (metaFrmEventArgs.Value is List<int> pairs)
