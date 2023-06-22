@@ -55,8 +55,8 @@ namespace MetaFrm.Razor.Browser.Shared
 
                 //this.LoadLocalStorage();
 
-                //if (Factory.Platform != DevicePlatform.Web)
-                this.HomeLoad();
+                if (Factory.Platform != DevicePlatform.Web || Environment.Version.Major != 6)
+                    this.HomeLoad();
 
                 if (this.CloudMessaging != null)
                 {
@@ -64,11 +64,11 @@ namespace MetaFrm.Razor.Browser.Shared
                     this.CloudMessaging.NotificationTappedEvent += CloudMessaging_NotificationTappedEvent;
                 }
             }
-            //else
-            //{
-            //    if (Factory.Platform == DevicePlatform.Web)
-            //        this.HomeLoad();
-            //}
+            else
+            {
+                if (Factory.Platform == DevicePlatform.Web && Environment.Version.Major == 6)
+                    this.HomeLoad();
+            }
 
             if (this.MainLayoutViewModel.CurrentPage != null && this.MainLayoutViewModel.CurrentPage.Instance != null && this.MainLayoutViewModel.CurrentPage.Instance is IAction action2
                 && this.MainLayoutViewModel.TmpBrowserType != null && this.MainLayoutViewModel.TmpBrowserType == this.MainLayoutViewModel.CurrentPageType)
