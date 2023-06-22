@@ -55,7 +55,7 @@ namespace MetaFrm.Razor.Browser.Shared
 
                 //this.LoadLocalStorage();
 
-                if (Factory.Platform != DevicePlatform.Web || Environment.Version.Major != 6)
+                if (Factory.Platform != DevicePlatform.Web)
                     this.HomeLoad();
 
                 if (this.CloudMessaging != null)
@@ -66,7 +66,7 @@ namespace MetaFrm.Razor.Browser.Shared
             }
             else
             {
-                if (Factory.Platform == DevicePlatform.Web && Environment.Version.Major == 6)
+                if (Factory.Platform == DevicePlatform.Web)
                     this.HomeLoad();
             }
 
