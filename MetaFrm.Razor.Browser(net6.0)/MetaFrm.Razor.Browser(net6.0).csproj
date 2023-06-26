@@ -19,6 +19,9 @@
     <Copyright>Copyright 2023. dsun all rights reserved.</Copyright>
     <PackageProjectUrl>https://github.com/MetaFrm/MetaFrm.Razor.Browser</PackageProjectUrl>
     <RepositoryUrl>https://github.com/MetaFrm/MetaFrm.Razor.Browser</RepositoryUrl>
+	
+	<SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ss:fffZ"))</SourceRevisionId>
+	
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>meta;framework;dotnet;maui;</PackageTags>
   </PropertyGroup>
