@@ -9,6 +9,12 @@ function ElementFocus(elementId) {
     document.getElementById(elementId).focus();
 }
 
+function ModalClose(dataBsTarget) {
+    var myModalEl = document.getElementById(dataBsTarget);
+    var modal = bootstrap.Modal.getInstance(myModalEl)
+    modal.hide();
+}
+
 window.getDimensions = function () {
     return {
         width: window.innerWidth,

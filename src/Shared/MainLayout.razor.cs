@@ -7,6 +7,7 @@ using MetaFrm.Maui.Devices;
 using MetaFrm.Service;
 using MetaFrm.Web.Bootstrap;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace MetaFrm.Razor.Browser.Shared
 {
@@ -23,6 +24,9 @@ namespace MetaFrm.Razor.Browser.Shared
 
         [Inject]
         private Maui.Notification.ICloudMessaging? CloudMessaging { get; set; }
+
+        [Inject]
+        public IJSRuntime? JSRuntime { get; set; }
 
         protected override void OnInitialized()
         {
@@ -99,6 +103,13 @@ namespace MetaFrm.Razor.Browser.Shared
 
                 if (metaFrmEventArgs.Value is List<int> pairs)
                 {
+                    object? tmp = Client.GetAttribute("Modal.DataBsTarget");
+
+                    if (tmp != null && tmp is string value && value.Length > 0)
+                        this.JSRuntime?.InvokeVoidAsync("ModalClose", tmp);
+                    else
+                        this.JSRuntime?.InvokeVoidAsync("ModalClose", "Modal001");
+
                     pairs.Add(-1);
                     this.Navigationqueue.Remove(metaFrmEventArgs);
                     this.MainLayout_Begin(this, metaFrmEventArgs);
