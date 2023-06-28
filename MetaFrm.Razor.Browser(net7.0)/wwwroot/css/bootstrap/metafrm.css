@@ -49,8 +49,10 @@ body {
     border-top-right-radius: var(--bs-border-radius-sm);
 }
 
-.modal-dialog-centered {
+.modal-dialog-start {
+    display: flex;
     align-items: start;
+    min-height: calc(100% - var(--bs-modal-margin) * 2);
 }
 
 .modal-footer {
