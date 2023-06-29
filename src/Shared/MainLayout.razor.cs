@@ -60,7 +60,7 @@ namespace MetaFrm.Razor.Browser.Shared
                 //this.LoadLocalStorage();
 
                 if (Factory.Platform != DevicePlatform.Web)
-                    this.HomeLoad();
+                    this.HomeLoadAsync();
 
                 if (this.CloudMessaging != null)
                 {
@@ -71,7 +71,7 @@ namespace MetaFrm.Razor.Browser.Shared
             else
             {
                 if (Factory.Platform == DevicePlatform.Web)
-                    this.HomeLoad();
+                    this.HomeLoadAsync();
             }
 
             if (this.MainLayoutViewModel.CurrentPage != null && this.MainLayoutViewModel.CurrentPage.Instance != null && this.MainLayoutViewModel.CurrentPage.Instance is IAction action2
@@ -180,10 +180,12 @@ namespace MetaFrm.Razor.Browser.Shared
         //    //}
         //}
 
-        private void HomeLoad()
+        private async Task HomeLoadAsync()
         {
             object? obj;
             string[] tmps;
+            string email;
+            string password;
 
             if (this.isFirstLoad)
             {
@@ -206,7 +208,14 @@ namespace MetaFrm.Razor.Browser.Shared
                 }
                 else
                 {
-                    this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { 0, 0 } });
+                    //로그인 안되어 있고 자동로그인 이면 로그인 화면으로
+                    email = await this.LocalStorage.GetItemAsStringAsync("Login.Email");
+                    password = await this.LocalStorage.GetItemAsStringAsync("Login.Password");
+
+                    if (!this.IsLogin() && !email.IsNullOrEmpty() && !password.IsNullOrEmpty())
+                        this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Login" });
+                    else
+                        this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { 0, 0 } });
                 }
 
                 this.StateHasChanged();
