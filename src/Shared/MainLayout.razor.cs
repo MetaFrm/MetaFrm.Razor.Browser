@@ -180,7 +180,7 @@ namespace MetaFrm.Razor.Browser.Shared
         //    //}
         //}
 
-        private async Task HomeLoadAsync()
+        private async void HomeLoadAsync()
         {
             object? obj;
             string[] tmps;
