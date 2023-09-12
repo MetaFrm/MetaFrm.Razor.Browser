@@ -3,11 +3,6 @@
 
 <PageTitle>@Factory.ProjectService.ServiceName - @this.MainLayoutViewModel.Title</PageTitle>
 
-@*@if (this.MainLayoutViewModel.TestBool)
-{
-	<link rel="stylesheet" href="_content/MetaFrm.Management.Razor.Browser/css/bootstrap/cerulean/bootstrap.css" />
-}*@
-
 <CascadingValue Value="this">
     <DynamicComponent Type="@this.MainLayoutViewModel.NavMenuType" @ref="this.MainLayoutViewModel.NavMenu" />
 

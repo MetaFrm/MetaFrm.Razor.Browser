@@ -96,9 +96,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\js\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Update="icon.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
