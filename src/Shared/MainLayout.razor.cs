@@ -458,5 +458,26 @@ namespace MetaFrm.Razor.Browser.Shared
         private void OnClickFunction(string action)
         {
         }
+
+        private void OnLoginClick()
+        {
+            if (!this.IsLogin())
+            {
+                this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Login" });
+            }
+        }
+        private void OnLogoutClick()
+        {
+            if (this.IsLogin())
+            {
+                this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Logout" });
+            }
+        }
+
+        private async void OnLayoutMenuExpandeClick()
+        {
+            if (this.JSRuntime != null)
+                await this.JSRuntime.InvokeVoidAsync("LayoutMenuExpande");
+        }
     }
 }

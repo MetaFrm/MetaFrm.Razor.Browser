@@ -1,8 +1,8 @@
 ﻿function ElementHide(elementId, isHide) {
     if (isHide)
-        document.getElementById(elementId).style.display = "none"; 
+        document.getElementById(elementId).style.display = "none";
     else
-        document.getElementById(elementId).style.display = ""; 
+        document.getElementById(elementId).style.display = "";
 }
 
 function ElementFocus(elementId) {
@@ -21,3 +21,20 @@ window.getDimensions = function () {
         height: window.innerHeight
     };
 };
+
+var isExpanded = false;
+function LayoutMenuInit() {
+    document.documentElement.setAttribute('class', 'light-style layout-menu-fixed layout-navbar-fixed');
+    isExpanded = false;
+}
+function LayoutMenuExpande() {
+    if (!isExpanded) {
+        //document.documentElement.setAttribute('class', 'light-style layout-menu-fixed layout-transitioning layout-menu');
+        document.documentElement.setAttribute('class', 'light-style layout-menu-fixed layout-navbar-fixed layout-menu-expanded');
+        isExpanded = true;
+    }
+    else {
+        document.documentElement.setAttribute('class', 'light-style layout-menu-fixed layout-navbar-fixed');
+        isExpanded = false;
+    }
+}
