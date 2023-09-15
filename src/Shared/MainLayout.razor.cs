@@ -28,9 +28,13 @@ namespace MetaFrm.Razor.Browser.Shared
         [Inject]
         public IJSRuntime? JSRuntime { get; set; }
 
+        Auth.AuthenticationStateProvider AuthenticationState;
+
         protected override void OnInitialized()
         {
             base.OnInitialized();
+
+            this.AuthenticationState ??= (this.AuthStateProvider as Auth.AuthenticationStateProvider) ?? (Auth.AuthenticationStateProvider)Factory.CreateInstance(typeof(Auth.AuthenticationStateProvider));
 
             if (Navigation != null)
             {
@@ -85,6 +89,7 @@ namespace MetaFrm.Razor.Browser.Shared
         }
 
         bool firstIsNavigationIntercepted = true;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2012:올바르게 ValueTasks 사용", Justification = "<보류 중>")]
         private void Navigation_LocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
         {
             if (!e.IsNavigationIntercepted && this.Navigationqueue.Count > 0)
@@ -184,8 +189,8 @@ namespace MetaFrm.Razor.Browser.Shared
         {
             object? obj;
             string[] tmps;
-            string email;
-            string password;
+            string? email = null;
+            string? password = null;
 
             if (this.isFirstLoad)
             {
@@ -195,7 +200,7 @@ namespace MetaFrm.Razor.Browser.Shared
 
                 if (obj != null && obj is string tmp && tmp.Contains(','))
                 {
-                    if (!this.IsLogin())
+                    if (!this.AuthenticationState.IsLogin())
                     {
                         this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Login" });
                     }
@@ -209,10 +214,13 @@ namespace MetaFrm.Razor.Browser.Shared
                 else
                 {
                     //로그인 안되어 있고 자동로그인 이면 로그인 화면으로
-                    email = await this.LocalStorage.GetItemAsStringAsync("Login.Email");
-                    password = await this.LocalStorage.GetItemAsStringAsync("Login.Password");
+                    if (this.LocalStorage != null)
+                    {
+                        email = await this.LocalStorage.GetItemAsStringAsync("Login.Email");
+                        password = await this.LocalStorage.GetItemAsStringAsync("Login.Password");
+                    }
 
-                    if (!this.IsLogin() && !email.IsNullOrEmpty() && !password.IsNullOrEmpty())
+                    if (!this.AuthenticationState.IsLogin() && !email.IsNullOrEmpty() && !password.IsNullOrEmpty())
                         this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Login" });
                     else
                         this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { 0, 0 } });
@@ -250,7 +258,7 @@ namespace MetaFrm.Razor.Browser.Shared
                         if (e.Value is List<int> pairs)
                         {
                             object? debugInfo;
-                            TypeTitle? typeTitle;
+                            TypeInfo? typeTitle;
                             Type? type = null;
 
                             debugInfo = Client.GetAttribute("DebugDLL");
@@ -261,7 +269,7 @@ namespace MetaFrm.Razor.Browser.Shared
                                     type = debugInfoDictionary[pairs[1]];
                             }
 
-                            typeTitle = await LoadAssembly(pairs[0], pairs[1], type);
+                            typeTitle = await Factory.GetDevelopmentTypeInfo(this.AuthenticationState, pairs[0], pairs[1], type);
 
                             if (typeTitle != null)
                             {
@@ -332,146 +340,15 @@ namespace MetaFrm.Razor.Browser.Shared
             this.StateHasChanged();
         }
 
-        private async Task<TypeTitle?> LoadAssembly(int MENU_ID, int ASSEMBLY_ID, Type? debugType = null)
-        {
-            Response response;
-            Type? type;
-            string? commandText;
-            string? tmp;
-            string token;
-            string? title;
-            string? description;
-
-            try
-            {
-                this.MainLayoutViewModel.IsBusy = true;
-
-                type = null;
-                title = "";
-                description = "";
-
-                ServiceData serviceData;
-
-
-                if (this.IsLogin())
-                {
-                    token = this.UserClaim("Token");
-                    commandText = Factory.ProjectService.GetAttributeValue("Select.Assembly");
-                }
-                else
-                {
-                    token = Factory.AccessKey;
-                    commandText = Factory.ProjectService.GetAttributeValue("Select.AssemblyDefault");
-                }
-
-                if (MENU_ID == 0 && ASSEMBLY_ID == 0)
-                {
-                    tmp = Factory.ProjectService.GetAttributeValue("Select.AssemblyHome");
-
-                    if (tmp != null && !tmp.IsNullOrEmpty())
-                    {
-                        MENU_ID = tmp.Split(',')[0].ToInt();
-                        ASSEMBLY_ID = tmp.Split(',')[1].ToInt();
-                    }
-                }
-
-                serviceData = new()
-                {
-                    ServiceName = Factory.ProjectService.ServiceNamespace ?? "",
-                    TransactionScope = false,
-                    Token = token
-                };
-                if (commandText != null) serviceData["1"].CommandText = commandText;
-                serviceData["1"].AddParameter("MENU_ID", DbType.Int, 3, MENU_ID);
-                serviceData["1"].AddParameter("ASSEMBLY_ID", DbType.Int, 3, ASSEMBLY_ID);
-
-                if (this.IsLogin())
-                    serviceData["1"].AddParameter("USER_ID", DbType.Int, 3, this.UserClaim("Account.USER_ID").ToInt());
-
-                response = await this.ServiceRequestAsync(serviceData);
-
-                if (response.Status == Status.OK)
-                {
-                    if (response.DataSet != null && response.DataSet.DataTables.Count > 1 && response.DataSet.DataTables[0].DataRows.Count > 0)
-                    {
-                        string? NAMESPACE = response.DataSet.DataTables[0].DataRows[0].String("NAMESPACE");
-                        string? FILE_TEXT = response.DataSet.DataTables[0].DataRows[0].String("FILE_TEXT");
-
-                        if (NAMESPACE != null && FILE_TEXT != null)
-                        {
-                            if (debugType == null)
-                                type = Factory.LoadType(NAMESPACE, Convert.FromBase64String(FILE_TEXT), true);
-                            else
-                                type = debugType;
-                            title = response.DataSet.DataTables[0].DataRows[0].String("NAME");
-                            description = response.DataSet.DataTables[0].DataRows[0].String("DESCRIPTION");
-                        }
-
-                        if (type != null)
-                        {
-                            string? ATTRIBUTE_NAME;
-                            string? ATTRIBUTE_VALUE;
-                            foreach (Data.DataRow dataRow in response.DataSet.DataTables[1].DataRows)
-                            {
-                                ATTRIBUTE_NAME = dataRow.String("ATTRIBUTE_NAME");
-                                ATTRIBUTE_VALUE = dataRow.String("ATTRIBUTE_VALUE");
-
-                                if (ATTRIBUTE_NAME != null && ATTRIBUTE_VALUE != null)
-                                    Client.SetAttribute(type, ATTRIBUTE_NAME, ATTRIBUTE_VALUE);
-                            }
-
-                            Client.SetAttribute(type, "MENU_ID", MENU_ID.ToString());
-                            Client.SetAttribute(type, "ASSEMBLY_ID", ASSEMBLY_ID.ToString());
-                            Client.SetAttribute(type, "Title", title ?? "");
-                            Client.SetAttribute(type, "Description", description ?? "");
-
-                            return new TypeTitle { Type = type, Title = title, Description = description };
-                        }
-                    }
-                }
-                else
-                {
-                    if (response.Message != null)
-                    {
-                        Dictionary<string, string> buttons = new() { { "Ok", Btn.Warning } };
-
-                        IModal modal = Modal.Make("LoadAssembly", response.Message, buttons, EventCallback.Factory.Create<string>(this, OnClickFunction));
-                        this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "ModalPara", Value = modal });
-                    }
-                }
-            }
-            finally
-            {
-                this.MainLayoutViewModel.IsBusy = false;
-            }
-
-            return null;
-        }
-
-        private class TypeTitle
-        {
-            public Type? Type { get; set; }
-            public string? Title { get; set; }
-            public string? Description { get; set; }
-        }
-
-        private void OnClickFunction(string action)
-        {
-        }
-
         private void OnLoginClick()
         {
-            if (!this.IsLogin())
-            {
+            if (!this.AuthenticationState.IsLogin())
                 this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Login" });
-            }
         }
         private void OnLogoutClick()
         {
-            if (this.IsLogin())
-            {
+            if (this.AuthenticationState.IsLogin())
                 this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Logout" });
-            }
         }
 
         private async void OnLayoutMenuExpandeClick()
