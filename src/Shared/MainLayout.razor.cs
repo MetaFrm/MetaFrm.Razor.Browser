@@ -1,11 +1,8 @@
 ﻿using MetaFrm.Alert;
 using MetaFrm.Config;
 using MetaFrm.Control;
-using MetaFrm.Database;
 using MetaFrm.Razor.Browser.ViewModels;
 using MetaFrm.Maui.Devices;
-using MetaFrm.Service;
-using MetaFrm.Web.Bootstrap;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -28,18 +25,12 @@ namespace MetaFrm.Razor.Browser.Shared
         [Inject]
         public IJSRuntime? JSRuntime { get; set; }
 
-        Auth.AuthenticationStateProvider AuthenticationState;
-
         protected override void OnInitialized()
         {
             base.OnInitialized();
 
-            this.AuthenticationState ??= (this.AuthStateProvider as Auth.AuthenticationStateProvider) ?? (Auth.AuthenticationStateProvider)Factory.CreateInstance(typeof(Auth.AuthenticationStateProvider));
-
-            if (Navigation != null)
-            {
+            if (this.Navigation != null)
                 this.Navigation.LocationChanged += Navigation_LocationChanged;
-            }
         }
 
         protected override void OnAfterRender(bool firstRender)
@@ -200,7 +191,7 @@ namespace MetaFrm.Razor.Browser.Shared
 
                 if (obj != null && obj is string tmp && tmp.Contains(','))
                 {
-                    if (!this.AuthenticationState.IsLogin())
+                    if (!this.AuthState.IsLogin())
                     {
                         this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Login" });
                     }
@@ -220,7 +211,7 @@ namespace MetaFrm.Razor.Browser.Shared
                         password = await this.LocalStorage.GetItemAsStringAsync("Login.Password");
                     }
 
-                    if (!this.AuthenticationState.IsLogin() && !email.IsNullOrEmpty() && !password.IsNullOrEmpty())
+                    if (!this.AuthState.IsLogin() && !email.IsNullOrEmpty() && !password.IsNullOrEmpty())
                         this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Login" });
                     else
                         this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { 0, 0 } });
@@ -269,7 +260,11 @@ namespace MetaFrm.Razor.Browser.Shared
                                     type = debugInfoDictionary[pairs[1]];
                             }
 
-                            typeTitle = await Factory.GetDevelopmentTypeInfo(this.AuthenticationState, pairs[0], pairs[1], type);
+                            bool isLogin = this.AuthState.IsLogin();
+
+                            typeTitle = await Factory.GetDevelopmentTypeInfo(isLogin ? this.AuthState.Token() : null
+                                , isLogin ? this.AuthState.UserID().ToString() : null
+                                , pairs[0], pairs[1], type);
 
                             if (typeTitle != null)
                             {
@@ -342,12 +337,12 @@ namespace MetaFrm.Razor.Browser.Shared
 
         private void OnLoginClick()
         {
-            if (!this.AuthenticationState.IsLogin())
+            if (!this.AuthState.IsLogin())
                 this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Login" });
         }
         private void OnLogoutClick()
         {
-            if (this.AuthenticationState.IsLogin())
+            if (this.AuthState.IsLogin())
                 this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Logout" });
         }
 
