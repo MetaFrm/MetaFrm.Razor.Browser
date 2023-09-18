@@ -263,7 +263,7 @@ namespace MetaFrm.Razor.Browser.Shared
                             bool isLogin = this.AuthState.IsLogin();
 
                             typeTitle = await Factory.GetDevelopmentTypeInfo(isLogin ? this.AuthState.Token() : null
-                                , isLogin ? this.AuthState.UserID().ToString() : null
+                                , isLogin ? this.AuthState.UserID() : null
                                 , pairs[0], pairs[1], type);
 
                             if (typeTitle != null)
