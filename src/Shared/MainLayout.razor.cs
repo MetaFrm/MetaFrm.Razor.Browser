@@ -211,7 +211,7 @@ namespace MetaFrm.Razor.Browser.Shared
                         password = await this.LocalStorage.GetItemAsStringAsync("Login.Password");
                     }
 
-                    if (!this.AuthState.IsLogin() && !email.IsNullOrEmpty() && !password.IsNullOrEmpty())
+                    if (!this.IsLogin() && !email.IsNullOrEmpty() && !password.IsNullOrEmpty())
                         this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Login" });
                     else
                         this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { 0, 0 } });
@@ -219,6 +219,18 @@ namespace MetaFrm.Razor.Browser.Shared
 
                 this.StateHasChanged();
             }
+        }
+        public bool IsLogin()
+        {
+            if (this.AuthState != null)
+            {
+                var auth = this.AuthState.Result;
+
+                if (auth.User.Identity != null && auth.User.Identity.IsAuthenticated)
+                    return true;
+            }
+
+            return false;
         }
 
         private async void MainLayout_Begin(ICore sender, MetaFrmEventArgs e)
