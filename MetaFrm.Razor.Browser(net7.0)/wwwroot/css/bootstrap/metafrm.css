@@ -2,6 +2,7 @@
     --bs-border-radius: 0.25rem;
     --bs-border-radius-sm: 0.35rem;
     --bs-border-radius-lg: 0.5rem;
+    --bs-emphasis-color: #fff;
 }
 
 body {
