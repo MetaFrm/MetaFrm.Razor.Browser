@@ -25,6 +25,40 @@ namespace MetaFrm.Razor.Browser.Shared
         [Inject]
         public IJSRuntime? JSRuntime { get; set; }
 
+        private string DisplayName
+        {
+            get
+            {
+                if (this.AuthState != null)
+                    return this.AuthState.Nickname();
+
+                return "";
+            }
+        }
+
+        private string Responsibility
+        {
+            get
+            {
+                if (this.AuthState != null)
+                    return this.AuthState.UserClaim("Account.RESPONSIBILITY_NAME");
+
+                return "";
+            }
+        }
+
+        private string ProfileImage
+        {
+            get
+            {
+                //if (this.AuthState != null)
+                //    return this.AuthState.UserClaim("Account.PROFILE_IMAGE");
+
+                return "";
+            }
+        }
+
+
         protected override void OnInitialized()
         {
             base.OnInitialized();
@@ -344,6 +378,12 @@ namespace MetaFrm.Razor.Browser.Shared
         {
             if (this.AuthState.IsLogin())
                 this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Logout" });
+        }
+
+        private void OnProfileClick()
+        {
+            if (this.AuthState.IsLogin())
+                this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Profile" });
         }
 
         private async void OnLayoutMenuExpandeClick()
