@@ -47,16 +47,8 @@ namespace MetaFrm.Razor.Browser.Shared
             }
         }
 
-        private string ProfileImage
-        {
-            get
-            {
-                //if (this.AuthState != null)
-                //    return this.AuthState.UserClaim("Account.PROFILE_IMAGE");
-
-                return "";
-            }
-        }
+        private string DisplayInfo { get; set; } = string.Empty;
+        private string ProfileImage { get; set; } = string.Empty;
 
 
         protected override void OnInitialized()
@@ -279,6 +271,20 @@ namespace MetaFrm.Razor.Browser.Shared
                         }
                         break;
 
+                    case "ProfileImage":
+                        if (e.Value != null && e.Value is string profileImage)
+                        {
+                            this.ProfileImage = profileImage;
+                            //this.StateHasChanged();
+                        }
+                        break;
+                    case "DisplayInfo":
+                        if (e.Value != null && e.Value is string displayInfo)
+                        {
+                            this.DisplayInfo = displayInfo;
+                            //this.StateHasChanged();
+                        }
+                        break;
                     case "Menu":
                         if (e.Value is List<int> pairs)
                         {
