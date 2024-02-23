@@ -49,6 +49,11 @@ namespace MetaFrm.Razor.Browser.Shared
 
         private string DisplayInfo { get; set; } = string.Empty;
         private string ProfileImage { get; set; } = string.Empty;
+        private string FooterInfo01 { get; set; } = string.Empty;
+        private string FooterInfo02 { get; set; } = string.Empty;
+        private string FooterInfo03 { get; set; } = string.Empty;
+        private string FooterInfo04 { get; set; } = string.Empty;
+        private string Copyright { get; set; } = string.Empty;
 
 
         protected override void OnInitialized()
@@ -57,6 +62,18 @@ namespace MetaFrm.Razor.Browser.Shared
 
             if (this.Navigation != null)
                 this.Navigation.LocationChanged += Navigation_LocationChanged;
+
+            try
+            {
+                this.FooterInfo01 = "MetaFrm.Razor.Browser".GetAttribute("FooterInfo01");
+                this.FooterInfo02 = "MetaFrm.Razor.Browser".GetAttribute("FooterInfo02");
+                this.FooterInfo03 = "MetaFrm.Razor.Browser".GetAttribute("FooterInfo03");
+                this.FooterInfo04 = "MetaFrm.Razor.Browser".GetAttribute("FooterInfo04");
+                this.Copyright = "MetaFrm.Razor.Browser".GetAttribute("Copyright");
+            }
+            catch (Exception)
+            {
+            }
         }
 
         protected override void OnAfterRender(bool firstRender)
