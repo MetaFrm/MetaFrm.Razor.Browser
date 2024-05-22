@@ -10,7 +10,7 @@
     <PackageId>MetaFrm.Razor.Browser.net6.0</PackageId>
     <Title>Meta Framework Razor Browser</Title>
     <Product>Meta Framework Razor Browser</Product>
-    <Version>6.0.2.2</Version>
+    <Version>6.0.2.3</Version>
     <Authors>dsun</Authors>
     <Company>Meta Framework</Company>
     <Description>Meta Framework
@@ -83,9 +83,9 @@
     <SupportedPlatform Include="browser" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MetaFrm.Core.net6.0" Version="6.0.2.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.26" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.26" />
+    <PackageReference Include="MetaFrm.Core.net6.0" Version="6.0.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.30" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.30" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="C:\Users\dsun\.nuget\packages\bootstrap\5.1.3\contentFiles\any\any\wwwroot\js\bootstrap.js">
