@@ -54,6 +54,7 @@ namespace MetaFrm.Razor.Browser.Shared
         private string FooterInfo03 { get; set; } = string.Empty;
         private string FooterInfo04 { get; set; } = string.Empty;
         private string Copyright { get; set; } = string.Empty;
+        private List<int> SettingsMenu { get; set; } = new();
 
 
         protected override void OnInitialized()
@@ -70,6 +71,14 @@ namespace MetaFrm.Razor.Browser.Shared
                 this.FooterInfo03 = "MetaFrm.Razor.Browser".GetAttribute("FooterInfo03");
                 this.FooterInfo04 = "MetaFrm.Razor.Browser".GetAttribute("FooterInfo04");
                 this.Copyright = "MetaFrm.Razor.Browser".GetAttribute("Copyright");
+                string tmp = "MetaFrm.Razor.Browser".GetAttribute("SettingsMenu");
+
+                if (!tmp.IsNullOrEmpty() && tmp.Contains(","))
+                {
+                    string[] tmps = tmp.Split(',');
+                    this.SettingsMenu.Add(tmps[0].ToInt());
+                    this.SettingsMenu.Add(tmps[1].ToInt());
+                }
             }
             catch (Exception)
             {
@@ -407,6 +416,12 @@ namespace MetaFrm.Razor.Browser.Shared
         {
             if (this.AuthState.IsLogin())
                 this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Profile" });
+        }
+
+        private void OnSettingsClick()
+        {
+            if (this.AuthState.IsLogin() && this.SettingsMenu.Count == 2)
+                this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Menu", Value = this.SettingsMenu });
         }
 
         private async void OnLayoutMenuExpandeClick()
