@@ -47,6 +47,7 @@ namespace MetaFrm.Razor.Browser.Shared
             }
         }
 
+        private bool BackButtonPressedPageBackward { get; set; } = true;
         private string DisplayInfo { get; set; } = string.Empty;
         private string ProfileImage { get; set; } = string.Empty;
         private string FooterInfo01 { get; set; } = string.Empty;
@@ -66,6 +67,7 @@ namespace MetaFrm.Razor.Browser.Shared
 
             try
             {
+                this.BackButtonPressedPageBackward = "MetaFrm.Razor.Browser".GetAttribute("BackButtonPressed.PageBackward") != "N";
                 this.FooterInfo01 = "MetaFrm.Razor.Browser".GetAttribute("FooterInfo01");
                 this.FooterInfo02 = "MetaFrm.Razor.Browser".GetAttribute("FooterInfo02");
                 this.FooterInfo03 = "MetaFrm.Razor.Browser".GetAttribute("FooterInfo03");
@@ -73,7 +75,7 @@ namespace MetaFrm.Razor.Browser.Shared
                 this.Copyright = "MetaFrm.Razor.Browser".GetAttribute("Copyright");
                 string tmp = "MetaFrm.Razor.Browser".GetAttribute("SettingsMenu");
 
-                if (!tmp.IsNullOrEmpty() && tmp.Contains(","))
+                if (!tmp.IsNullOrEmpty() && tmp.Contains(','))
                 {
                     string[] tmps = tmp.Split(',');
                     this.SettingsMenu.Add(tmps[0].ToInt());
@@ -187,18 +189,16 @@ namespace MetaFrm.Razor.Browser.Shared
             {
                 try
                 {
-                    if (e.NotificationData.Data.ContainsKey("Menu") && e.NotificationData.Data["Menu"].Contains(','))
+                    if (e.NotificationData.Data.TryGetValue("Menu", out string? value) && value.Contains(','))
                     {
                         Task.Run(async delegate
                         {
-                            string tmp = e.NotificationData.Data["Menu"];
+                            Client.SetAttribute("Menu", value);//"MENU_ID,ASSEMBLY_ID"
 
-                            Client.SetAttribute("Menu", tmp);//"MENU_ID,ASSEMBLY_ID"
-
-                            tmp = tmp.Split(',')[1];//ASSEMBLY_ID
+                            value = value.Split(',')[1];//ASSEMBLY_ID
 
                             foreach (var item in e.NotificationData.Data.Keys)
-                                Client.SetAttribute($"{tmp}.{item}", e.NotificationData.Data[item]);
+                                Client.SetAttribute($"{value}.{item}", e.NotificationData.Data[item]);
 
                             await Task.Delay(TimeSpan.FromSeconds(1.6));
 
@@ -322,8 +322,8 @@ namespace MetaFrm.Razor.Browser.Shared
 
                             if (debugInfo != null && debugInfo is Dictionary<int, Type> debugInfoDictionary)
                             {
-                                if (debugInfoDictionary.ContainsKey(pairs[1]))
-                                    type = debugInfoDictionary[pairs[1]];
+                                if (debugInfoDictionary.TryGetValue(pairs[1], out Type? value))
+                                    type = value;
                             }
 
                             bool isLogin = this.AuthState.IsLogin();
@@ -338,7 +338,7 @@ namespace MetaFrm.Razor.Browser.Shared
                                 this.MainLayoutViewModel.Title = $"{typeTitle.Title} ({this.MainLayoutViewModel.TmpBrowserType?.Assembly.GetName().Version})";
                             }
 
-                            if (pairs.Count < 3)
+                            if (pairs.Count < 3 && this.BackButtonPressedPageBackward)
                                 this.Navigationqueue.Add(e);
 
                             if (this.Navigationqueue.Count > 0)
