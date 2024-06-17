@@ -5,6 +5,7 @@ using MetaFrm.Razor.Browser.ViewModels;
 using MetaFrm.Maui.Devices;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using MetaFrm.Service;
 
 namespace MetaFrm.Razor.Browser.Shared
 {
@@ -303,6 +304,9 @@ namespace MetaFrm.Razor.Browser.Shared
                             this.ProfileImage = profileImage;
                             //this.StateHasChanged();
                         }
+                        else
+                            this.SearchProfileImage();
+
                         break;
                     case "DisplayInfo":
                         if (e.Value != null && e.Value is string displayInfo)
@@ -310,6 +314,9 @@ namespace MetaFrm.Razor.Browser.Shared
                             this.DisplayInfo = displayInfo;
                             //this.StateHasChanged();
                         }
+                        else
+                            this.SearchDisplayInfo();
+
                         break;
                     case "Menu":
                         if (e.Value is List<int> pairs)
@@ -428,6 +435,80 @@ namespace MetaFrm.Razor.Browser.Shared
         {
             if (this.JSRuntime != null)
                 await this.JSRuntime.InvokeVoidAsync("LayoutMenuExpande");
+        }
+
+
+        private async void SearchDisplayInfo()
+        {
+            Response response;
+
+            try
+            {
+                if (this.MainLayoutViewModel.IsBusy) return;
+
+                this.MainLayoutViewModel.IsBusy = true;
+
+                bool isLogin = this.AuthState.IsLogin();
+
+                ServiceData data = new()
+                {
+                    Token = isLogin ? this.AuthState.Token() : Factory.AccessKey
+                };
+
+                data["1"].CommandText = "MetaFrm.Razor.Browser".GetAttribute("SearchDisplayInfo");
+                data["1"].AddParameter("USER_ID", Database.DbType.Int, 3, isLogin ? this.AuthState.UserID() : null);
+
+                response = await this.ServiceRequestAsync(data);
+
+                if (response.Status == Status.OK)
+                {
+                    if (response.DataSet != null && response.DataSet.DataTables.Count > 0 && response.DataSet.DataTables[0].DataRows.Count > 0)
+                        this.DisplayInfo = response.DataSet.DataTables[0].DataRows[0].String("DISPLAY_INFO") ?? "";
+                }
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                this.MainLayoutViewModel.IsBusy = false;
+            }
+        }
+        private async void SearchProfileImage()
+        {
+            Response response;
+
+            try
+            {
+                if (this.MainLayoutViewModel.IsBusy) return;
+
+                this.MainLayoutViewModel.IsBusy = true;
+
+                bool isLogin = this.AuthState.IsLogin();
+
+                ServiceData data = new()
+                {
+                    Token = isLogin ? this.AuthState.Token() : Factory.AccessKey
+                };
+
+                data["1"].CommandText = "MetaFrm.Razor.Browser".GetAttribute("SearchProfileImage");
+                data["1"].AddParameter("USER_ID", Database.DbType.Int, 3, isLogin ? this.AuthState.UserID() : null);
+
+                response = await this.ServiceRequestAsync(data);
+
+                if (response.Status == Status.OK)
+                {
+                    if (response.DataSet != null && response.DataSet.DataTables.Count > 0 && response.DataSet.DataTables[0].DataRows.Count > 0)
+                        this.ProfileImage = response.DataSet.DataTables[0].DataRows[0].String("PROFILE_IMAGE") ?? "";
+                }
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                this.MainLayoutViewModel.IsBusy = false;
+            }
         }
     }
 }
