@@ -463,7 +463,10 @@ namespace MetaFrm.Razor.Browser.Shared
                 if (response.Status == Status.OK)
                 {
                     if (response.DataSet != null && response.DataSet.DataTables.Count > 0 && response.DataSet.DataTables[0].DataRows.Count > 0)
+                    {
                         this.DisplayInfo = response.DataSet.DataTables[0].DataRows[0].String("DISPLAY_INFO") ?? "";
+                        this.StateHasChanged(); 
+                    }
                 }
             }
             catch (Exception)
@@ -499,7 +502,10 @@ namespace MetaFrm.Razor.Browser.Shared
                 if (response.Status == Status.OK)
                 {
                     if (response.DataSet != null && response.DataSet.DataTables.Count > 0 && response.DataSet.DataTables[0].DataRows.Count > 0)
+                    {
                         this.ProfileImage = response.DataSet.DataTables[0].DataRows[0].String("PROFILE_IMAGE") ?? "";
+                        this.StateHasChanged();
+                    }
                 }
             }
             catch (Exception)
