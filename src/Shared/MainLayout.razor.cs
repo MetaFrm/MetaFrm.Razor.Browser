@@ -405,7 +405,7 @@ namespace MetaFrm.Razor.Browser.Shared
                 this.MainLayoutViewModel.CurrentPageType = this.MainLayoutViewModel.TmpBrowserType;
             }
 
-            this.StateHasChanged();
+            await InvokeAsync(StateHasChanged);
         }
 
         private void OnLoginClick()
@@ -465,7 +465,7 @@ namespace MetaFrm.Razor.Browser.Shared
                     if (response.DataSet != null && response.DataSet.DataTables.Count > 0 && response.DataSet.DataTables[0].DataRows.Count > 0)
                     {
                         this.DisplayInfo = response.DataSet.DataTables[0].DataRows[0].String("DISPLAY_INFO") ?? "";
-                        this.StateHasChanged(); 
+                        await InvokeAsync(StateHasChanged);
                     }
                 }
             }
@@ -504,7 +504,7 @@ namespace MetaFrm.Razor.Browser.Shared
                     if (response.DataSet != null && response.DataSet.DataTables.Count > 0 && response.DataSet.DataTables[0].DataRows.Count > 0)
                     {
                         this.ProfileImage = response.DataSet.DataTables[0].DataRows[0].String("PROFILE_IMAGE") ?? "";
-                        this.StateHasChanged();
+                        await InvokeAsync(StateHasChanged);
                     }
                 }
             }
