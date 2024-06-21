@@ -10,7 +10,7 @@
     <PackageId>MetaFrm.Razor.Browser.net7.0</PackageId>
     <Title>Meta Framework Razor Browser</Title>
     <Product>Meta Framework Razor Browser</Product>
-    <Version>7.0.3.6</Version>
+    <Version>7.0.3.7</Version>
     <Authors>dsun</Authors>
     <Company>Meta Framework</Company>
     <Description>Meta Framework
@@ -22,54 +22,6 @@
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>meta;framework;dotnet;maui;</PackageTags>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="wwwroot\css\bootstrap\cerulean\**" />
-    <Compile Remove="wwwroot\css\bootstrap\cerulean_20220811\**" />
-    <Compile Remove="wwwroot\css\bootstrap\superhero\**" />
-    <Compile Remove="wwwroot\css\bootstrap\superhero_20220811\**" />
-    <Content Remove="wwwroot\css\bootstrap\cerulean\**" />
-    <Content Remove="wwwroot\css\bootstrap\cerulean_20220811\**" />
-    <Content Remove="wwwroot\css\bootstrap\superhero\**" />
-    <Content Remove="wwwroot\css\bootstrap\superhero_20220811\**" />
-    <EmbeddedResource Remove="wwwroot\css\bootstrap\cerulean\**" />
-    <EmbeddedResource Remove="wwwroot\css\bootstrap\cerulean_20220811\**" />
-    <EmbeddedResource Remove="wwwroot\css\bootstrap\superhero\**" />
-    <EmbeddedResource Remove="wwwroot\css\bootstrap\superhero_20220811\**" />
-    <None Remove="wwwroot\css\bootstrap\cerulean\**" />
-    <None Remove="wwwroot\css\bootstrap\cerulean_20220811\**" />
-    <None Remove="wwwroot\css\bootstrap\superhero\**" />
-    <None Remove="wwwroot\css\bootstrap\superhero_20220811\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="ExampleJsInterop.cs" />
-    <Compile Remove="MainLayoutViewModel.cs" />
-    <Compile Remove="Pages\Error.cshtml.cs" />
-    <Compile Remove="Pages\Home.razor.cs" />
-    <Compile Remove="Shared\Login.razor.cs" />
-    <Compile Remove="Shared\Logout.razor.cs" />
-    <Compile Remove="ViewModels\DefaultBrowserViewModel.cs" />
-    <Compile Remove="ViewModels\LoginViewModel.cs" />
-    <Compile Remove="ViewModels\LogoutViewModel.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Remove="Modal.razor" />
-    <Content Remove="Pages\Error.cshtml" />
-    <Content Remove="Pages\Home.razor" />
-    <Content Remove="Pages\_Host.cshtml" />
-    <Content Remove="Pages\_Layout.cshtml" />
-    <Content Remove="Shared\Login.razor" />
-    <Content Remove="Shared\Logout.razor" />
-    <Content Remove="Shared\NavMenu.razor" />
-    <Content Remove="Shared\NavMenu1.razor" />
-    <Content Remove="Shared\Toast.razor" />
-    <Content Remove="wwwroot\background.png" />
-    <Content Remove="wwwroot\exampleJsInterop.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="DefaultBrowser.razor.css" />
-    <None Remove="Shared\MainLayout.razor.css" />
-    <None Remove="Shared\NavMenu1.razor.css" />
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\src\Shared\Error.razor.cs" Link="Shared\Error.razor.cs" />
     <Compile Include="..\src\Shared\MainLayout.razor.cs" Link="Shared\MainLayout.razor.cs" />
@@ -83,9 +35,9 @@
     <SupportedPlatform Include="browser" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MetaFrm.Core.net7.0" Version="7.0.3.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.19" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.19" />
+    <PackageReference Include="MetaFrm.Core.net7.0" Version="7.0.3.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.20" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="7.0.20" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="C:\Users\dsun\.nuget\packages\bootstrap\5.1.3\contentFiles\any\any\wwwroot\js\bootstrap.js">
