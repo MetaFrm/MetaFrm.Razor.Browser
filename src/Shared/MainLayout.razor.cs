@@ -366,6 +366,8 @@ namespace MetaFrm.Razor.Browser.Shared
                         }
 
                         break;
+                    case "InvokeAsync":
+                        break;
 
                     default:
                         if (e.Action != null)
@@ -405,7 +407,13 @@ namespace MetaFrm.Razor.Browser.Shared
                 this.MainLayoutViewModel.CurrentPageType = this.MainLayoutViewModel.TmpBrowserType;
             }
 
-            await InvokeAsync(StateHasChanged);
+            try
+            {
+                await InvokeAsync(StateHasChanged);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private void OnLoginClick()

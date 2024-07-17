@@ -1,11 +1,11 @@
 ﻿@using MetaFrm.Control
 @inherits BaseComponent
 
-<h1 class="text-danger">Error.</h1>
+<h1 class="text-danger">@Localization["오류"]</h1>
 
 @if (this.ErrorViewModel != null && this.ErrorViewModel.IsDebug)
 {
-    <h2 class="text-danger">An error occurred while processing your request.</h2>
+    <h2 class="text-danger">@Localization["요청을 처리하는 동안 오류가 발생했습니다."]</h2>
     <p>
         <strong>Message(@DateTime.Now.ToString("yyyy-MM-dd HH:mm")) : </strong> <code>@this.ErrorViewModel?.Message</code>
     </p>
@@ -15,7 +15,7 @@
 }
 else
 {
-    <h2 class="text-danger">An error was encountered. Please contact your system administrator.</h2>
+    <h2 class="text-danger">@Localization["오류가 발생했습니다. 시스템 관리자에게 문의하세요."]</h2>
     <p class="mt-4">
         <strong>Message(@DateTime.Now.ToString("yyyy-MM-dd HH:mm")) : </strong> <code>@this.ErrorViewModel?.Message</code>
     </p>
