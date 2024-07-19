@@ -6,6 +6,8 @@ using MetaFrm.Maui.Devices;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MetaFrm.Service;
+using MetaFrm.Web.Bootstrap;
+using System;
 
 namespace MetaFrm.Razor.Browser.Shared
 {
@@ -18,13 +20,7 @@ namespace MetaFrm.Razor.Browser.Shared
         private readonly List<MetaFrmEventArgs> Navigationqueue = new();
 
         [Inject]
-        protected NavigationManager? Navigation { get; set; }
-
-        [Inject]
         private Maui.Notification.ICloudMessaging? CloudMessaging { get; set; }
-
-        [Inject]
-        public IJSRuntime? JSRuntime { get; set; }
 
         private string DisplayName
         {
@@ -82,6 +78,9 @@ namespace MetaFrm.Razor.Browser.Shared
                     this.SettingsMenu.Add(tmps[0].ToInt());
                     this.SettingsMenu.Add(tmps[1].ToInt());
                 }
+
+                this.Action -= MainLayout_Begin;
+                this.Action += MainLayout_Begin;
             }
             catch (Exception)
             {
@@ -383,7 +382,7 @@ namespace MetaFrm.Razor.Browser.Shared
                         //        this.MainLayoutViewModel.TmpBrowserType = typeof(MetaFrm.Razor.Profile); break;
                         //    case "Register":
                         //        this.MainLayoutViewModel.TmpBrowserType = typeof(MetaFrm.Razor.Register); break;
-                        //    case "PasswordReset"
+                        //    case "PasswordReset":
                         //        this.MainLayoutViewModel.TmpBrowserType = typeof(MetaFrm.Razor.PasswordReset); break;
                         //    default:
                         //        if (e.Action != null)
