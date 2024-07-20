@@ -10,7 +10,7 @@
     <PackageId>MetaFrm.Razor.Browser.net6.0</PackageId>
     <Title>Meta Framework Razor Browser</Title>
     <Product>Meta Framework Razor Browser</Product>
-    <Version>6.0.3.20</Version>
+    <Version>6.0.3.22</Version>
     <Authors>dsun</Authors>
     <Company>Meta Framework</Company>
     <Description>Meta Framework
@@ -35,8 +35,8 @@
     <SupportedPlatform Include="browser" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MetaFrm.Core.net6.0" Version="6.0.3.20" />
-    <PackageReference Include="MetaFrm.Razor.Essentials.net6.0" Version="6.0.3.20" />
+    <PackageReference Include="MetaFrm.Core.net6.0" Version="6.0.3.22" />
+    <PackageReference Include="MetaFrm.Razor.Essentials.net6.0" Version="6.0.3.22" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.32" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.32" />
   </ItemGroup>

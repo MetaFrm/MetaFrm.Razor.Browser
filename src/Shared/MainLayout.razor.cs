@@ -6,8 +6,6 @@ using MetaFrm.Maui.Devices;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MetaFrm.Service;
-using MetaFrm.Web.Bootstrap;
-using System;
 
 namespace MetaFrm.Razor.Browser.Shared
 {
