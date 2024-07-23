@@ -212,20 +212,6 @@ namespace MetaFrm.Razor.Browser.Shared
             }
         }
 
-        //private async void LoadLocalStorage()
-        //{
-        //    //if (this.LocalStorage != null)
-        //    //{
-        //    //    bool testBool = await this.LocalStorage.GetItemAsync<bool>(nameof(this.MainLayoutViewModel) + nameof(this.MainLayoutViewModel.TestBool));
-
-        //    //    if (this.MainLayoutViewModel.TestBool != testBool)
-        //    //    {
-        //    //        this.MainLayoutViewModel.TestBool = testBool;
-        //    //        this.StateHasChanged();
-        //    //    }
-        //    //}
-        //}
-
         private async void HomeLoadAsync()
         {
             object? obj;

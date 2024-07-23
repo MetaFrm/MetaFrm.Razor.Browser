@@ -20,8 +20,6 @@ namespace MetaFrm.Razor.Browser.ViewModels
 
         public Type? TmpBrowserType { get; set; }
 
-        public bool TestBool { get; set; }
-
         public Type? HomeType { get; set; }
 
         public MainLayoutViewModel()
