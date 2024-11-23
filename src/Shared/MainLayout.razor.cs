@@ -354,7 +354,7 @@ namespace MetaFrm.Razor.Browser.Shared
 
                     default:
                         if (e.Action != null)
-                            this.MainLayoutViewModel.TmpBrowserType = Factory.LoadTypeFromServiceAttribut(e.Action);
+                            this.MainLayoutViewModel.TmpBrowserType = await Factory.LoadTypeFromServiceAttributeAsync(e.Action);
 
                         //switch (e.Action)
                         //{

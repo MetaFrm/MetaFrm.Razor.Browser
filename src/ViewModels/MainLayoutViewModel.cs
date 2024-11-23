@@ -26,16 +26,16 @@ namespace MetaFrm.Razor.Browser.ViewModels
         {
             this.Title = "Home";
 
-            this.NavMenuType = Factory.LoadTypeFromServiceAttribut("NavMenu");
+            this.NavMenuType = Factory.LoadTypeFromServiceAttribute("NavMenu");
             //this.NavMenuType = typeof(MetaFrm.Razor.Menu.NavMenu);
 
-            this.CurrentPageType = Factory.LoadTypeFromServiceAttribut("Home");
+            this.CurrentPageType = Factory.LoadTypeFromServiceAttribute("Home");
             //this.CurrentPageType = typeof(MetaFrm.Razor.Home);
 
-            this.ToastType = Factory.LoadTypeFromServiceAttribut("Toast");
+            this.ToastType = Factory.LoadTypeFromServiceAttribute("Toast");
             //this.ToastType = typeof(MetaFrm.Razor.Alert.Toast);
 
-            this.ModalType = Factory.LoadTypeFromServiceAttribut("Modal");
+            this.ModalType = Factory.LoadTypeFromServiceAttribute("Modal");
             //this.ModalType = typeof(MetaFrm.Razor.Alert.Modal);
         }
     }
