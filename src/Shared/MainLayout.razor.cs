@@ -15,7 +15,7 @@ namespace MetaFrm.Razor.Browser.Shared
 
         private bool isFirstLoad = true;
 
-        private readonly List<MetaFrmEventArgs> Navigationqueue = new();
+        private readonly List<MetaFrmEventArgs> Navigationqueue = [];
 
         [Inject]
         private Maui.Notification.ICloudMessaging? CloudMessaging { get; set; }
@@ -50,7 +50,7 @@ namespace MetaFrm.Razor.Browser.Shared
         private string FooterInfo03 { get; set; } = string.Empty;
         private string FooterInfo04 { get; set; } = string.Empty;
         private string Copyright { get; set; } = string.Empty;
-        private List<int> SettingsMenu { get; set; } = new();
+        private List<int> SettingsMenu { get; set; } = [];
 
 
         protected override void OnInitialized()
@@ -132,7 +132,6 @@ namespace MetaFrm.Razor.Browser.Shared
         }
 
         bool firstIsNavigationIntercepted = true;
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2012:올바르게 ValueTasks 사용", Justification = "<보류 중>")]
         private void Navigation_LocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
         {
             if (!e.IsNavigationIntercepted && this.Navigationqueue.Count > 0)
@@ -154,9 +153,13 @@ namespace MetaFrm.Razor.Browser.Shared
                     object? tmp = Client.GetAttribute("Modal.DataBsTarget");
 
                     if (tmp != null && tmp is string value && value.Length > 0)
-                        this.JSRuntime?.InvokeVoidAsync("ModalClose", tmp);
+                    {
+                        ValueTask? _ = this.JSRuntime?.InvokeVoidAsync("ModalClose", tmp);
+                    }
                     else
-                        this.JSRuntime?.InvokeVoidAsync("ModalClose", "Modal001");
+                    {
+                        ValueTask? _ = this.JSRuntime?.InvokeVoidAsync("ModalClose", "Modal001");
+                    }
 
                     pairs.Add(-1);
                     this.Navigationqueue.Remove(metaFrmEventArgs);
@@ -167,17 +170,23 @@ namespace MetaFrm.Razor.Browser.Shared
                 this.firstIsNavigationIntercepted = true;
         }
 
-#pragma warning disable CA1816 // Dispose 메서드는 SuppressFinalize를 호출해야 합니다.
         public void Dispose()
-#pragma warning restore CA1816 // Dispose 메서드는 SuppressFinalize를 호출해야 합니다.
         {
-            if (this.CloudMessaging != null)
-                this.CloudMessaging.NotificationTappedEvent -= CloudMessaging_NotificationTappedEvent;
-
-            if (Navigation != null)
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                this.Navigation.LocationChanged -= Navigation_LocationChanged;
-                this.Navigationqueue.Clear();
+                if (this.CloudMessaging != null)
+                    this.CloudMessaging.NotificationTappedEvent -= CloudMessaging_NotificationTappedEvent;
+
+                if (this.Navigation != null)
+                {
+                    this.Navigation.LocationChanged -= Navigation_LocationChanged;
+                    this.Navigationqueue.Clear();
+                }
             }
         }
 
