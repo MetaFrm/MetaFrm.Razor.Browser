@@ -57,3 +57,11 @@ function LayoutMenuExpande() {
         isExpanded = false;
     }
 }
+function window_open(url, target, width, height) {
+    var leftpos = screen.width / 2 - (width / 2);
+    var toppos = screen.height / 2 - (height / 2);
+
+    var winopts = "width=" + width + ", height=" + height + ", toolbar=no,status=no,statusbar=no,menubar=no,scrollbars=no,resizable=no";
+    var position = ",left=" + leftpos + ", top=" + toppos;
+    window.open(url, target, winopts + position);
+}
