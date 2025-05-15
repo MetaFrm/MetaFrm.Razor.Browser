@@ -51,6 +51,7 @@ namespace MetaFrm.Razor.Browser.Shared
         private string FooterInfo04 { get; set; } = string.Empty;
         private string Copyright { get; set; } = string.Empty;
         private List<int> SettingsMenu { get; set; } = [];
+        private bool IsLoginView { get; set; } = true;
 
 
         protected override void OnInitialized()
@@ -69,6 +70,7 @@ namespace MetaFrm.Razor.Browser.Shared
                 this.FooterInfo04 = "MetaFrm.Razor.Browser".GetAttribute("FooterInfo04");
                 this.Copyright = "MetaFrm.Razor.Browser".GetAttribute("Copyright");
                 string tmp = "MetaFrm.Razor.Browser".GetAttribute("SettingsMenu");
+                this.IsLoginView = "MetaFrm.Razor.Browser".GetAttribute("IsLoginView").ToBool();
 
                 if (!tmp.IsNullOrEmpty() && tmp.Contains(','))
                 {
