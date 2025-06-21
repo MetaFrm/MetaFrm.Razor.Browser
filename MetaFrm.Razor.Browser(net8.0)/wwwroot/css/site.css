@@ -59,6 +59,21 @@ a, .btn-link {
     color: white;
 }
 
-    .blazor-error-boundary::after {
-        content: "An error has occurred."
-    }
+.blazor-error-boundary::after {
+    content: "An error has occurred."
+}
+
+.modal-backdrop {
+    width: 500vw;
+    height: 500vh;
+}
+
+.offcanvas-backdrop {
+    width: 500vw;
+    height: 500vh;
+}
+
+.content-backdrop {
+    width: 500vw;
+    height: 500vh;
+}

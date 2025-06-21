@@ -65,3 +65,17 @@ function window_open(url, target, width, height) {
     var position = ",left=" + leftpos + ", top=" + toppos;
     window.open(url, target, winopts + position);
 }
+
+function SetViewportScale(width, scale) {
+    var viewportmeta = document.querySelector('meta[name="viewport"]');
+    if (viewportmeta) {
+        if (scale === undefined || scale === null || scale < 0.25 || scale > 10) {
+        }
+        else {
+            if (width === undefined || width === null || width == "") {
+                width = "device-width";
+            }
+            viewportmeta.content = "width=" + width + ", initial-scale=" + scale + ", minimum-scale=0.3, maximum-scale=5.0, user-scalable=no, viewport-fit=cover";
+        }
+    }
+}

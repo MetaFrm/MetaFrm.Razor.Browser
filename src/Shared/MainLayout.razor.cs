@@ -93,6 +93,8 @@ namespace MetaFrm.Razor.Browser.Shared
 
             if (firstRender)
             {
+                this.InitScale();
+
                 if (this.MainLayoutViewModel.NavMenu != null && this.MainLayoutViewModel.NavMenu.Instance != null && this.MainLayoutViewModel.NavMenu.Instance is IAction action)
                 {
                     action.Action -= MainLayout_Begin;
@@ -130,6 +132,19 @@ namespace MetaFrm.Razor.Browser.Shared
                 action2.Action += MainLayout_Begin;
 
                 this.MainLayoutViewModel.TmpBrowserType = null;
+            }
+        }
+        private async void InitScale()
+        {
+            if (this.LocalStorage != null)
+            {
+                var scale = await this.LocalStorage.GetItemAsStringAsync("Viewport.Scale");
+
+                if (scale != null && this.JSRuntime != null)
+                {
+                    System.Drawing.Size browserDimension = await this.JSRuntime.InvokeAsync<System.Drawing.Size>("getDimensions", null);
+                    await this.JSRuntime.InvokeVoidAsync("SetViewportScale", $"{browserDimension.Width}", $"{scale:0.#}");
+                }
             }
         }
 
@@ -381,7 +396,7 @@ namespace MetaFrm.Razor.Browser.Shared
                         //        this.MainLayoutViewModel.TmpBrowserType = typeof(MetaFrm.Razor.PasswordReset); break;
                         //    default:
                         //        if (e.Action != null)
-                        //            this.MainLayoutViewModel.TmpBrowserType = Factory.LoadTypeFromServiceAttribut(e.Action);
+                        //            this.MainLayoutViewModel.TmpBrowserType = await Factory.LoadTypeFromServiceAttributeAsync(e.Action);
                         //        break;
                         //}
 
