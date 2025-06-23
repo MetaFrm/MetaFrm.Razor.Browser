@@ -66,13 +66,22 @@ function window_open(url, target, width, height) {
     window.open(url, target, winopts + position);
 }
 
+function InitAndroidViewportScale(width, scale) {
+    var html = document.querySelector('html');
+    if (html) {
+        html.style = "zoom: 0.5;";
+        SetViewportScale(width, scale);
+    }
+}
+
 function SetViewportScale(width, scale) {
     var viewportmeta = document.querySelector('meta[name="viewport"]');
     if (viewportmeta) {
         if (scale === undefined || scale === null || scale < 0.25 || scale > 10) {
         }
         else {
-            if (width === undefined || width === null || width == "") {
+            if (width === undefined || width === null || width == "")
+            {
                 width = "device-width";
             }
             viewportmeta.content = "width=" + width + ", initial-scale=" + scale + ", minimum-scale=0.3, maximum-scale=5.0, user-scalable=no, viewport-fit=cover";

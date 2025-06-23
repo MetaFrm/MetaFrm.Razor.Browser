@@ -136,14 +136,23 @@ namespace MetaFrm.Razor.Browser.Shared
         }
         private async void InitScale()
         {
-            if (this.LocalStorage != null)
+            if (this.LocalStorage != null && Factory.DeviceInfo != null && this.JSRuntime != null)
             {
                 var scale = await this.LocalStorage.GetItemAsStringAsync("Viewport.Scale");
 
-                if (scale != null && this.JSRuntime != null)
+                if (Factory.DeviceInfo.Platform == DevicePlatform.Android)
                 {
-                    System.Drawing.Size browserDimension = await this.JSRuntime.InvokeAsync<System.Drawing.Size>("getDimensions", null);
-                    await this.JSRuntime.InvokeVoidAsync("SetViewportScale", $"{browserDimension.Width}", $"{scale:0.#}");
+                    if (scale != null)
+                        await this.JSRuntime.InvokeVoidAsync("InitAndroidViewportScale", $"", $"{scale:0.#}");
+                    else
+                        await this.JSRuntime.InvokeVoidAsync("InitAndroidViewportScale", $"", $"{2.0M:0.#}");
+                }
+                else if (Factory.DeviceInfo.Platform == DevicePlatform.iOS)
+                {
+                    if (scale != null)
+                        await this.JSRuntime.InvokeVoidAsync("SetViewportScale", $"", $"{scale:0.#}");
+                    else
+                        await this.JSRuntime.InvokeVoidAsync("SetViewportScale", $"", $"{1.0M:0.#}");
                 }
             }
         }

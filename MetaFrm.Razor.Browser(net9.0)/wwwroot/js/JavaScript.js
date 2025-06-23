@@ -66,6 +66,14 @@ function window_open(url, target, width, height) {
     window.open(url, target, winopts + position);
 }
 
+function InitAndroidViewportScale(width, scale) {
+    var html = document.querySelector('html');
+    if (html) {
+        html.style = "zoom: 0.5;";
+        SetViewportScale(width, scale);
+    }
+}
+
 function SetViewportScale(width, scale) {
     var viewportmeta = document.querySelector('meta[name="viewport"]');
     if (viewportmeta) {
