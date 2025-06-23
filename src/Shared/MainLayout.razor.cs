@@ -149,10 +149,12 @@ namespace MetaFrm.Razor.Browser.Shared
                 }
                 else if (Factory.DeviceInfo.Platform == DevicePlatform.iOS)
                 {
+                    System.Drawing.Size browserDimension = await this.JSRuntime.InvokeAsync<System.Drawing.Size>("getDimensions", null);
+
                     if (scale != null)
-                        await this.JSRuntime.InvokeVoidAsync("SetViewportScale", $"", $"{scale:0.#}");
+                        await this.JSRuntime.InvokeVoidAsync("SetViewportScale", $"{browserDimension.Width}", $"{scale:0.#}");
                     else
-                        await this.JSRuntime.InvokeVoidAsync("SetViewportScale", $"", $"{1.0M:0.#}");
+                        await this.JSRuntime.InvokeVoidAsync("SetViewportScale", $"{browserDimension.Width}", $"{1.0M:0.#}");
                 }
             }
         }
