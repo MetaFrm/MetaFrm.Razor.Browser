@@ -53,6 +53,17 @@ namespace MetaFrm.Razor.Browser.Shared
         private List<int> SettingsMenu { get; set; } = [];
         private bool IsLoginView { get; set; } = true;
 
+        public MainLayout()
+        {
+            string tmp = this.GetType()?.FullName ?? "";
+            if (!tmp.IsNullOrEmpty())
+            {
+                if (Factory.IsRegisterInstance(tmp))
+                    Factory.Dispose(Factory.CreateInstance(tmp));
+
+                Factory.RegisterInstance(this, tmp);
+            }
+        }
 
         protected override void OnInitialized()
         {
@@ -79,8 +90,8 @@ namespace MetaFrm.Razor.Browser.Shared
                     this.SettingsMenu.Add(tmps[1].ToInt());
                 }
 
-                this.Action -= MainLayout_Begin;
-                this.Action += MainLayout_Begin;
+                //this.Action -= MainLayout_Begin;
+                //this.Action += MainLayout_Begin;
             }
             catch (Exception)
             {
@@ -119,11 +130,11 @@ namespace MetaFrm.Razor.Browser.Shared
                     this.CloudMessaging.NotificationTappedEvent += CloudMessaging_NotificationTappedEvent;
                 }
             }
-            else
-            {
-                if (Factory.Platform == DevicePlatform.Web)
-                    this.HomeLoadAsync();
-            }
+            //else
+            //{
+            //    if (Factory.Platform == DevicePlatform.Web)
+            //        this.HomeLoadAsync();
+            //}
 
             if (this.MainLayoutViewModel.CurrentPage != null && this.MainLayoutViewModel.CurrentPage.Instance != null && this.MainLayoutViewModel.CurrentPage.Instance is IAction action2
                 && this.MainLayoutViewModel.TmpBrowserType != null && this.MainLayoutViewModel.TmpBrowserType == this.MainLayoutViewModel.CurrentPageType)
@@ -412,6 +423,8 @@ namespace MetaFrm.Razor.Browser.Shared
                         this.MainLayoutViewModel.Title = $"{e.Action} ({this.MainLayoutViewModel.TmpBrowserType?.Assembly.GetName().Version})";
                         break;
                 }
+
+                this.OnAction(this, e);
             }
             catch (Exception ex)
             {
