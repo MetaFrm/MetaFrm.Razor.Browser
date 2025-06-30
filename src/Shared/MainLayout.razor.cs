@@ -89,9 +89,6 @@ namespace MetaFrm.Razor.Browser.Shared
                     this.SettingsMenu.Add(tmps[0].ToInt());
                     this.SettingsMenu.Add(tmps[1].ToInt());
                 }
-
-                //this.Action -= MainLayout_Begin;
-                //this.Action += MainLayout_Begin;
             }
             catch (Exception)
             {
@@ -119,10 +116,7 @@ namespace MetaFrm.Razor.Browser.Shared
                     action1.Action += MainLayout_Begin;
                 }
 
-                //this.LoadLocalStorage();
-
-                if (Factory.Platform != DevicePlatform.Web)
-                    this.HomeLoadAsync();
+                this.HomeLoadAsync();
 
                 if (this.CloudMessaging != null)
                 {
@@ -130,11 +124,6 @@ namespace MetaFrm.Razor.Browser.Shared
                     this.CloudMessaging.NotificationTappedEvent += CloudMessaging_NotificationTappedEvent;
                 }
             }
-            //else
-            //{
-            //    if (Factory.Platform == DevicePlatform.Web)
-            //        this.HomeLoadAsync();
-            //}
 
             if (this.MainLayoutViewModel.CurrentPage != null && this.MainLayoutViewModel.CurrentPage.Instance != null && this.MainLayoutViewModel.CurrentPage.Instance is IAction action2
                 && this.MainLayoutViewModel.TmpBrowserType != null && this.MainLayoutViewModel.TmpBrowserType == this.MainLayoutViewModel.CurrentPageType)
