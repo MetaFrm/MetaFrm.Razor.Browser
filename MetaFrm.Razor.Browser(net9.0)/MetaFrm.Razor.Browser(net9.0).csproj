@@ -10,7 +10,7 @@
     <PackageId>MetaFrm.Razor.Browser.net9.0</PackageId>
     <Title>Meta Framework Razor Browser</Title>
     <Product>Meta Framework Razor Browser</Product>
-    <Version>9.0.4.43</Version>
+    <Version>9.0.4.44</Version>
     <Authors>dsun</Authors>
     <Company>Meta Framework</Company>
     <Description>Meta Framework
@@ -36,7 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MetaFrm.Core.net9.0" Version="9.0.4.43" />
-    <PackageReference Include="MetaFrm.Razor.Essentials.net9.0" Version="9.0.4.43" />
+    <PackageReference Include="MetaFrm.Razor.Essentials.net9.0" Version="9.0.4.44" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.6" />
   </ItemGroup>
