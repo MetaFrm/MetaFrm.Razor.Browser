@@ -1,11 +1,11 @@
 ﻿using MetaFrm.Alert;
 using MetaFrm.Config;
 using MetaFrm.Control;
-using MetaFrm.Razor.Browser.ViewModels;
 using MetaFrm.Maui.Devices;
+using MetaFrm.Razor.Browser.ViewModels;
+using MetaFrm.Service;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using MetaFrm.Service;
 
 namespace MetaFrm.Razor.Browser.Shared
 {
@@ -19,6 +19,9 @@ namespace MetaFrm.Razor.Browser.Shared
 
         [Inject]
         private Maui.Notification.ICloudMessaging? CloudMessaging { get; set; }
+
+        [Inject]
+        IActionEvent? ActionScan { get; set; }
 
         private string DisplayName
         {
@@ -52,6 +55,9 @@ namespace MetaFrm.Razor.Browser.Shared
         private string Copyright { get; set; } = string.Empty;
         private List<int> SettingsMenu { get; set; } = [];
         private bool IsLoginView { get; set; } = true;
+        private bool IsLoginShowMenu { get; set; } = false;
+        private string PageCss { get; set; } = string.Empty;
+        private bool IsLogin { get; set; } = false;
 
         public MainLayout()
         {
@@ -74,14 +80,28 @@ namespace MetaFrm.Razor.Browser.Shared
 
             try
             {
+                if (this.ActionScan != null)
+                {
+                    this.ActionScan.Action -= MainLayout_Begin;
+                    this.ActionScan.Action += MainLayout_Begin;
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            try
+            {
                 this.BackButtonPressedPageBackward = "MetaFrm.Razor.Browser".GetAttribute("BackButtonPressed.PageBackward") != "N";
                 this.FooterInfo01 = "MetaFrm.Razor.Browser".GetAttribute("FooterInfo01");
                 this.FooterInfo02 = "MetaFrm.Razor.Browser".GetAttribute("FooterInfo02");
                 this.FooterInfo03 = "MetaFrm.Razor.Browser".GetAttribute("FooterInfo03");
                 this.FooterInfo04 = "MetaFrm.Razor.Browser".GetAttribute("FooterInfo04");
                 this.Copyright = "MetaFrm.Razor.Browser".GetAttribute("Copyright");
-                string tmp = "MetaFrm.Razor.Browser".GetAttribute("SettingsMenu");
                 this.IsLoginView = "MetaFrm.Razor.Browser".GetAttribute("IsLoginView").ToBool();
+                this.IsLoginShowMenu = "MetaFrm.Razor.Browser".GetAttribute("IsLoginShowMenu").ToBool();
+                this.PageCss = "MetaFrm.Razor.Browser".GetAttribute("PageCss");
+                string tmp = "MetaFrm.Razor.Browser".GetAttribute("SettingsMenu");
 
                 if (!tmp.IsNullOrEmpty() && tmp.Contains(','))
                 {
@@ -109,14 +129,14 @@ namespace MetaFrm.Razor.Browser.Shared
                     action.Action += MainLayout_Begin;
                 }
 
-                if (this.MainLayoutViewModel.CurrentPage != null && this.MainLayoutViewModel.CurrentPage.Instance != null && this.MainLayoutViewModel.CurrentPage.Instance is IAction action1
-                    && this.MainLayoutViewModel.TmpBrowserType == null)
+                if (this.MainLayoutViewModel.CurrentPage != null && this.MainLayoutViewModel.CurrentPage.Instance != null && this.MainLayoutViewModel.CurrentPage.Instance is IAction action1 && this.MainLayoutViewModel.TmpBrowserType == null)
                 {
                     action1.Action -= MainLayout_Begin;
                     action1.Action += MainLayout_Begin;
                 }
 
-                this.HomeLoadAsync();
+                if (Factory.Platform != DevicePlatform.Web)
+                    this.HomeLoadAsync();
 
                 if (this.CloudMessaging != null)
                 {
@@ -124,9 +144,14 @@ namespace MetaFrm.Razor.Browser.Shared
                     this.CloudMessaging.NotificationTappedEvent += CloudMessaging_NotificationTappedEvent;
                 }
             }
+            else
+            {
+                if (Factory.Platform == DevicePlatform.Web)
+                    this.HomeLoadAsync();
+            }
 
             if (this.MainLayoutViewModel.CurrentPage != null && this.MainLayoutViewModel.CurrentPage.Instance != null && this.MainLayoutViewModel.CurrentPage.Instance is IAction action2
-                && this.MainLayoutViewModel.TmpBrowserType != null && this.MainLayoutViewModel.TmpBrowserType == this.MainLayoutViewModel.CurrentPageType)
+            && this.MainLayoutViewModel.TmpBrowserType != null && this.MainLayoutViewModel.TmpBrowserType == this.MainLayoutViewModel.CurrentPageType)
             {
                 action2.Action -= MainLayout_Begin;
                 action2.Action += MainLayout_Begin;
@@ -205,8 +230,17 @@ namespace MetaFrm.Razor.Browser.Shared
         {
             if (disposing)
             {
+                if (this.MainLayoutViewModel.NavMenu != null && this.MainLayoutViewModel.NavMenu.Instance != null && this.MainLayoutViewModel.NavMenu.Instance is IAction action)
+                    action.Action -= MainLayout_Begin;
+
+                if (this.MainLayoutViewModel.CurrentPage != null && this.MainLayoutViewModel.CurrentPage.Instance != null && this.MainLayoutViewModel.CurrentPage.Instance is IAction action1 && this.MainLayoutViewModel.TmpBrowserType == null)
+                    action1.Action -= MainLayout_Begin;
+
                 if (this.CloudMessaging != null)
                     this.CloudMessaging.NotificationTappedEvent -= CloudMessaging_NotificationTappedEvent;
+
+                if (this.ActionScan != null)
+                    this.ActionScan.Action -= MainLayout_Begin;
 
                 if (this.Navigation != null)
                 {
@@ -251,18 +285,21 @@ namespace MetaFrm.Razor.Browser.Shared
         {
             object? obj;
             string[] tmps;
+            string? tmp1;
             string? email = null;
             string? password = null;
 
             if (this.isFirstLoad)
             {
+                this.IsLogin = this.AuthState.IsLogin();
+
                 this.isFirstLoad = false;
 
                 obj = Client.GetAttribute("Menu");
 
                 if (obj != null && obj is string tmp && tmp.Contains(','))
                 {
-                    if (!this.AuthState.IsLogin())
+                    if (!this.IsLogin)
                     {
                         this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Login" });
                     }
@@ -282,10 +319,21 @@ namespace MetaFrm.Razor.Browser.Shared
                         password = await this.LocalStorage.GetItemAsStringAsync("Login.Password");
                     }
 
-                    if (!this.AuthState.IsLogin() && !email.IsNullOrEmpty() && !password.IsNullOrEmpty())
+                    if (!this.IsLogin && !email.IsNullOrEmpty() && !password.IsNullOrEmpty())
                         this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Login" });
                     else
-                        this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { 0, 0 } });
+                    {
+
+                        tmp1 = Factory.ProjectService.GetAttributeValue("Select.AssemblyHome");
+
+                        if (tmp1 != null && !tmp1.IsNullOrEmpty())
+                        {
+                            tmps = tmp1.Split(',');
+                            this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { tmps[0].ToInt(), tmps[1].ToInt() } });
+                        }
+                        else
+                            this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { 0, 0 } });
+                    }
                 }
 
                 this.StateHasChanged();
@@ -423,6 +471,9 @@ namespace MetaFrm.Razor.Browser.Shared
 
             if (this.MainLayoutViewModel.TmpBrowserType != null)
             {
+                if (this.MainLayoutViewModel.CurrentPage != null && this.MainLayoutViewModel.CurrentPage.Instance != null && this.MainLayoutViewModel.CurrentPage.Instance is IAction action)
+                    action.Action -= MainLayout_Begin;
+
                 this.MainLayoutViewModel.CurrentPageType = null;
                 this.MainLayoutViewModel.CurrentPageType = this.MainLayoutViewModel.TmpBrowserType;
             }

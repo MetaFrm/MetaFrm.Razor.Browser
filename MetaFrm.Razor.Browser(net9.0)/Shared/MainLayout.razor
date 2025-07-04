@@ -7,9 +7,11 @@
     @switch (Factory.ProjectService.GetAttributeValue("Template.Name") ?? "")
     {
         case "":
-            <DynamicComponent Type="@this.MainLayoutViewModel.NavMenuType" @ref="this.MainLayoutViewModel.NavMenu" />
+            <div hidden="@(this.IsLoginShowMenu && !this.IsLogin)">
+                <DynamicComponent Type="@this.MainLayoutViewModel.NavMenuType" @ref="this.MainLayoutViewModel.NavMenu" />
+            </div>
 
-            <div class="page">
+            <div class="page" style="@this.PageCss">
                 <main>
                     <article class="content px-2 mb-1">
                         <DynamicComponent Type="@this.MainLayoutViewModel.CurrentPageType" Parameters="this.MainLayoutViewModel.CurrentPagePara" @ref="this.MainLayoutViewModel.CurrentPage" />
@@ -23,16 +25,20 @@
             <!-- Layout wrapper -->
             <div class="layout-wrapper layout-content-navbar  ">
                 <div class="layout-container">
+
                     <!-- Menu -->
-                    <DynamicComponent Type="@this.MainLayoutViewModel.NavMenuType" @ref="this.MainLayoutViewModel.NavMenu" />
+                    <div hidden="@(this.IsLoginShowMenu && !this.IsLogin)">
+                        <DynamicComponent Type="@this.MainLayoutViewModel.NavMenuType" @ref="this.MainLayoutViewModel.NavMenu" />
+                    </div>
                     <!-- / Menu -->
+
                     <!-- Layout container -->
-                    <div class="page layout-page">
+                    <div class="page layout-page" style="@this.PageCss">
                         <!-- Navbar -->
                         <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme p-3" id="layout-navbar">
 
-                            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0   d-xl-none ">
-                                <a class="nav-item nav-link px-0 me-xl-4" href="#" @onclick="() => this.OnLayoutMenuExpandeClick()">
+                            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none ">
+                                <a hidden="@(this.IsLoginShowMenu && !this.IsLogin)" class="nav-item nav-link px-0 me-xl-4" href="#" @onclick="() => this.OnLayoutMenuExpandeClick()">
                                     <i class="bx bx-menu bx-sm"></i>
                                 </a>
                             </div>
