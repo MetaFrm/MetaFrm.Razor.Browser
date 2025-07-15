@@ -10,7 +10,7 @@
     <PackageId>MetaFrm.Razor.Browser.net9.0</PackageId>
     <Title>Meta Framework Razor Browser</Title>
     <Product>Meta Framework Razor Browser</Product>
-    <Version>9.0.4.44</Version>
+    <Version>9.0.4.51</Version>
     <Authors>dsun</Authors>
     <Company>Meta Framework</Company>
     <Description>Meta Framework
@@ -21,7 +21,11 @@
     <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ss:fffZ"))</SourceRevisionId>
     <PackageIcon>icon.png</PackageIcon>
     <PackageTags>meta;framework;dotnet;maui;</PackageTags>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\readme.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="..\src\Shared\Error.razor.cs" Link="Shared\Error.razor.cs" />
     <Compile Include="..\src\Shared\MainLayout.razor.cs" Link="Shared\MainLayout.razor.cs" />
@@ -35,10 +39,10 @@
     <SupportedPlatform Include="browser" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MetaFrm.Core.net9.0" Version="9.0.4.43" />
-    <PackageReference Include="MetaFrm.Razor.Essentials.net9.0" Version="9.0.4.44" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.6" />
+    <PackageReference Include="MetaFrm.Core.net9.0" Version="9.0.4.51" />
+    <PackageReference Include="MetaFrm.Razor.Essentials.net9.0" Version="9.0.4.51" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.7" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="C:\Users\dsun\.nuget\packages\bootstrap\5.1.3\contentFiles\any\any\wwwroot\js\bootstrap.js">

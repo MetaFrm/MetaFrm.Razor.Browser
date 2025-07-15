@@ -11,7 +11,7 @@ namespace MetaFrm.Razor.Browser.Shared
 {
     public partial class MainLayout : IDisposable
     {
-        internal MainLayoutViewModel MainLayoutViewModel { get; set; } = Factory.CreateViewModel<MainLayoutViewModel>();
+        internal MainLayoutViewModel MainLayoutViewModel { get; set; } = new();
 
         private bool isFirstLoad = true;
 
@@ -21,7 +21,7 @@ namespace MetaFrm.Razor.Browser.Shared
         private Maui.Notification.ICloudMessaging? CloudMessaging { get; set; }
 
         [Inject]
-        IActionEvent? ActionScan { get; set; }
+        IActionEvent? ActionEvent { get; set; }
 
         private string DisplayName
         {
@@ -54,10 +54,12 @@ namespace MetaFrm.Razor.Browser.Shared
         private string FooterInfo04 { get; set; } = string.Empty;
         private string Copyright { get; set; } = string.Empty;
         private List<int> SettingsMenu { get; set; } = [];
+        private List<int> HomeMenuAssemblyID { get; set; } = [];
         private bool IsLoginView { get; set; } = true;
         private bool IsLoginShowMenu { get; set; } = false;
         private string PageCss { get; set; } = string.Empty;
         private bool IsLogin { get; set; } = false;
+        private string TemplateName { get; set; } = string.Empty;
 
         public MainLayout()
         {
@@ -75,15 +77,17 @@ namespace MetaFrm.Razor.Browser.Shared
         {
             base.OnInitialized();
 
+            this.MainLayoutViewModel = this.CreateViewModel<MainLayoutViewModel>();
+
             if (this.Navigation != null)
                 this.Navigation.LocationChanged += Navigation_LocationChanged;
 
             try
             {
-                if (this.ActionScan != null)
+                if (this.ActionEvent != null)
                 {
-                    this.ActionScan.Action -= MainLayout_Begin;
-                    this.ActionScan.Action += MainLayout_Begin;
+                    this.ActionEvent.Action -= MainLayout_Begin;
+                    this.ActionEvent.Action += MainLayout_Begin;
                 }
             }
             catch (Exception)
@@ -92,16 +96,16 @@ namespace MetaFrm.Razor.Browser.Shared
 
             try
             {
-                this.BackButtonPressedPageBackward = "MetaFrm.Razor.Browser".GetAttribute("BackButtonPressed.PageBackward") != "N";
-                this.FooterInfo01 = "MetaFrm.Razor.Browser".GetAttribute("FooterInfo01");
-                this.FooterInfo02 = "MetaFrm.Razor.Browser".GetAttribute("FooterInfo02");
-                this.FooterInfo03 = "MetaFrm.Razor.Browser".GetAttribute("FooterInfo03");
-                this.FooterInfo04 = "MetaFrm.Razor.Browser".GetAttribute("FooterInfo04");
-                this.Copyright = "MetaFrm.Razor.Browser".GetAttribute("Copyright");
-                this.IsLoginView = "MetaFrm.Razor.Browser".GetAttribute("IsLoginView").ToBool();
-                this.IsLoginShowMenu = "MetaFrm.Razor.Browser".GetAttribute("IsLoginShowMenu").ToBool();
-                this.PageCss = "MetaFrm.Razor.Browser".GetAttribute("PageCss");
-                string tmp = "MetaFrm.Razor.Browser".GetAttribute("SettingsMenu");
+                this.BackButtonPressedPageBackward = this.GetAttributeBool(nameof(this.BackButtonPressedPageBackward));
+                this.Copyright = this.GetAttribute(nameof(this.Copyright));
+                this.FooterInfo01 = this.GetAttribute(nameof(this.FooterInfo01));
+                this.FooterInfo02 = this.GetAttribute(nameof(this.FooterInfo02));
+                this.FooterInfo03 = this.GetAttribute(nameof(this.FooterInfo03));
+                this.FooterInfo04 = this.GetAttribute(nameof(this.FooterInfo04));
+                this.IsLoginView = this.GetAttributeBool(nameof(this.IsLoginView));
+                this.IsLoginShowMenu = this.GetAttributeBool(nameof(this.IsLoginShowMenu));
+                this.PageCss = this.GetAttribute(nameof(this.PageCss));
+                string tmp = this.GetAttribute(nameof(this.SettingsMenu));
 
                 if (!tmp.IsNullOrEmpty() && tmp.Contains(','))
                 {
@@ -109,6 +113,16 @@ namespace MetaFrm.Razor.Browser.Shared
                     this.SettingsMenu.Add(tmps[0].ToInt());
                     this.SettingsMenu.Add(tmps[1].ToInt());
                 }
+
+                tmp = this.GetAttribute(nameof(this.HomeMenuAssemblyID));
+                if (!tmp.IsNullOrEmpty() && tmp.Contains(','))
+                {
+                    string[] tmps = tmp.Split(',');
+                    this.HomeMenuAssemblyID.Add(tmps[0].ToInt());
+                    this.HomeMenuAssemblyID.Add(tmps[1].ToInt());
+                }
+
+                this.TemplateName = this.GetAttribute(nameof(this.TemplateName));
             }
             catch (Exception)
             {
@@ -239,8 +253,8 @@ namespace MetaFrm.Razor.Browser.Shared
                 if (this.CloudMessaging != null)
                     this.CloudMessaging.NotificationTappedEvent -= CloudMessaging_NotificationTappedEvent;
 
-                if (this.ActionScan != null)
-                    this.ActionScan.Action -= MainLayout_Begin;
+                if (this.ActionEvent != null)
+                    this.ActionEvent.Action -= MainLayout_Begin;
 
                 if (this.Navigation != null)
                 {
@@ -280,12 +294,10 @@ namespace MetaFrm.Razor.Browser.Shared
                 }
             }
         }
-
         private async void HomeLoadAsync()
         {
             object? obj;
             string[] tmps;
-            string? tmp1;
             string? email = null;
             string? password = null;
 
@@ -323,13 +335,9 @@ namespace MetaFrm.Razor.Browser.Shared
                         this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Login" });
                     else
                     {
-
-                        tmp1 = Factory.ProjectService.GetAttributeValue("Select.AssemblyHome");
-
-                        if (tmp1 != null && !tmp1.IsNullOrEmpty())
+                        if (this.HomeMenuAssemblyID.Count == 2)
                         {
-                            tmps = tmp1.Split(',');
-                            this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { tmps[0].ToInt(), tmps[1].ToInt() } });
+                            this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { this.HomeMenuAssemblyID[0], this.HomeMenuAssemblyID[1] } });
                         }
                         else
                             this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Menu", Value = new List<int> { 0, 0 } });
@@ -435,9 +443,12 @@ namespace MetaFrm.Razor.Browser.Shared
                     case "InvokeAsync":
                         break;
 
+                    case "Menu.Active":
+                        break;
+
                     default:
                         if (e.Action != null)
-                            this.MainLayoutViewModel.TmpBrowserType = await Factory.LoadTypeFromServiceAttributeAsync(e.Action);
+                            this.MainLayoutViewModel.TmpBrowserType = await Factory.LoadTypeAsync(this.GetAttribute(e.Action));
 
                         //switch (e.Action)
                         //{
@@ -453,7 +464,7 @@ namespace MetaFrm.Razor.Browser.Shared
                         //        this.MainLayoutViewModel.TmpBrowserType = typeof(MetaFrm.Razor.PasswordReset); break;
                         //    default:
                         //        if (e.Action != null)
-                        //            this.MainLayoutViewModel.TmpBrowserType = await Factory.LoadTypeFromServiceAttributeAsync(e.Action);
+                        //            this.MainLayoutViewModel.TmpBrowserType = await Factory.LoadTypeAsync(this.GetAttribute(e.Action));
                         //        break;
                         //}
 
@@ -490,7 +501,11 @@ namespace MetaFrm.Razor.Browser.Shared
         private void OnLoginClick()
         {
             if (!this.AuthState.IsLogin())
+            {
                 this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Login" });
+
+                this.ActionEvent?.ActionEvnt(this, new() { Action = "Menu.Active", Value = new List<int> { 0, 0 } });
+            }
         }
         private void OnLogoutClick()
         {
@@ -501,13 +516,22 @@ namespace MetaFrm.Razor.Browser.Shared
         private void OnProfileClick()
         {
             if (this.AuthState.IsLogin())
+            {
                 this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Profile" });
+
+                this.ActionEvent?.ActionEvnt(this, new() { Action = "Menu.Active", Value = new List<int> { 0, 0 } });
+            }
         }
 
         private void OnSettingsClick()
         {
             if (this.AuthState.IsLogin() && this.SettingsMenu.Count == 2)
+            {
                 this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Menu", Value = this.SettingsMenu });
+
+                this.ActionEvent?.ActionEvnt(this, new() { Action = "Menu.Active", Value = this.SettingsMenu });
+            }
+
         }
 
         private async void OnLayoutMenuExpandeClick()
@@ -534,7 +558,7 @@ namespace MetaFrm.Razor.Browser.Shared
                     Token = isLogin ? this.AuthState.Token() : Factory.AccessKey
                 };
 
-                data["1"].CommandText = "MetaFrm.Razor.Browser".GetAttribute("SearchDisplayInfo");
+                data["1"].CommandText = this.GetAttribute("SearchDisplayInfo");
                 data["1"].AddParameter("USER_ID", Database.DbType.Int, 3, isLogin ? this.AuthState.UserID() : null);
 
                 response = await this.ServiceRequestAsync(data);
@@ -573,7 +597,7 @@ namespace MetaFrm.Razor.Browser.Shared
                     Token = isLogin ? this.AuthState.Token() : Factory.AccessKey
                 };
 
-                data["1"].CommandText = "MetaFrm.Razor.Browser".GetAttribute("SearchProfileImage");
+                data["1"].CommandText = this.GetAttribute("SearchProfileImage");
                 data["1"].AddParameter("USER_ID", Database.DbType.Int, 3, isLogin ? this.AuthState.UserID() : null);
 
                 response = await this.ServiceRequestAsync(data);

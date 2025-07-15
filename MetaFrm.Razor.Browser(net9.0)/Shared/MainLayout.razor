@@ -1,14 +1,15 @@
 ﻿@using MetaFrm.Control
 @inherits BaseLayoutComponent
+@inject MetaFrm.Factory Factory
 
 <PageTitle>@Factory.ProjectService.ServiceName - @this.MainLayoutViewModel.Title</PageTitle>
 
 <CascadingValue Value="this">
-    @switch (Factory.ProjectService.GetAttributeValue("Template.Name") ?? "")
+    @switch (this.TemplateName)
     {
         case "":
             <div hidden="@(this.IsLoginShowMenu && !this.IsLogin)">
-                <DynamicComponent Type="@this.MainLayoutViewModel.NavMenuType" @ref="this.MainLayoutViewModel.NavMenu" />
+                <DynamicComponent Type="@ViewModels.MainLayoutViewModel.NavMenuType" @ref="this.MainLayoutViewModel.NavMenu" />
             </div>
 
             <div class="page" style="@this.PageCss">
@@ -28,7 +29,7 @@
 
                     <!-- Menu -->
                     <div hidden="@(this.IsLoginShowMenu && !this.IsLogin)">
-                        <DynamicComponent Type="@this.MainLayoutViewModel.NavMenuType" @ref="this.MainLayoutViewModel.NavMenu" />
+                        <DynamicComponent Type="@ViewModels.MainLayoutViewModel.NavMenuType" @ref="this.MainLayoutViewModel.NavMenu" />
                     </div>
                     <!-- / Menu -->
 
@@ -196,5 +197,5 @@
     }
 </CascadingValue>
 
-<DynamicComponent Type="this.MainLayoutViewModel.ToastType" Parameters="this.MainLayoutViewModel.ToastPara" />
-<DynamicComponent Type="this.MainLayoutViewModel.ModalType" Parameters="this.MainLayoutViewModel.ModalPara" />
+<DynamicComponent Type="ViewModels.MainLayoutViewModel.ToastType" Parameters="this.MainLayoutViewModel.ToastPara" />
+<DynamicComponent Type="ViewModels.MainLayoutViewModel.ModalType" Parameters="this.MainLayoutViewModel.ModalPara" />

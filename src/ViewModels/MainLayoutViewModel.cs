@@ -5,7 +5,7 @@ namespace MetaFrm.Razor.Browser.ViewModels
 {
     public partial class MainLayoutViewModel : BaseViewModel
     {
-        public Type? NavMenuType { get; set; }
+        public static Type? NavMenuType { get; set; }
         public DynamicComponent? NavMenu { get; set; }
 
         public Type? CurrentPageType { get; set; }
@@ -13,10 +13,10 @@ namespace MetaFrm.Razor.Browser.ViewModels
         public Dictionary<string, object>? CurrentPagePara { get; set; }
 
         public Dictionary<string, object>? ToastPara { get; set; }
-        public Type? ToastType { get; set; }
+        public static Type? ToastType { get; set; }
 
         public Dictionary<string, object>? ModalPara { get; set; }
-        public Type? ModalType { get; set; }
+        public static Type? ModalType { get; set; }
 
         public Type? TmpBrowserType { get; set; }
 
@@ -26,17 +26,20 @@ namespace MetaFrm.Razor.Browser.ViewModels
         {
             this.Title = "Home";
 
-            this.NavMenuType = Factory.LoadTypeFromServiceAttribute("NavMenu");
-            //this.NavMenuType = typeof(MetaFrm.Razor.Menu.NavMenu);
+            if (NavMenuType == null)
+                NavMenuType = Factory.LoadType(this.GetAttribute("NavMenu"), null, true);
+            //NavMenuType = typeof(MetaFrm.Razor.Menu.NavMenu);
 
-            this.CurrentPageType = Factory.LoadTypeFromServiceAttribute("Home");
+            this.CurrentPageType = Factory.LoadType(this.GetAttribute("Home"), null, true);
             //this.CurrentPageType = typeof(MetaFrm.Razor.Home);
 
-            this.ToastType = Factory.LoadTypeFromServiceAttribute("Toast");
-            //this.ToastType = typeof(MetaFrm.Razor.Alert.Toast);
+            if (ToastType == null)
+                ToastType = Factory.LoadType(this.GetAttribute("Toast"), null, true);
+            //ToastType = typeof(MetaFrm.Razor.Alert.Toast);
 
-            this.ModalType = Factory.LoadTypeFromServiceAttribute("Modal");
-            //this.ModalType = typeof(MetaFrm.Razor.Alert.Modal);
+            if (ModalType == null)
+                ModalType = Factory.LoadType(this.GetAttribute("Modal"), null, true);
+            //ModalType = typeof(MetaFrm.Razor.Alert.Modal);
         }
     }
 }
