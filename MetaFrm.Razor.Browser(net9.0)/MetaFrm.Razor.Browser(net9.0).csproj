@@ -3,24 +3,25 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyName>MetaFrm.Razor.Browser</AssemblyName>
     <RootNamespace>MetaFrm.Razor.Browser</RootNamespace>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <AssemblyName>MetaFrm.Razor.Browser</AssemblyName>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>MetaFrm.Razor.Browser.net9.0</PackageId>
-    <Title>Meta Framework Razor Browser</Title>
-    <Product>Meta Framework Razor Browser</Product>
-    <Version>9.0.4.51</Version>
+    <Version>9.0.4.55</Version>
     <Authors>dsun</Authors>
     <Company>Meta Framework</Company>
-    <Description>Meta Framework
-(Multi platform &amp; Meta management)</Description>
     <Copyright>Copyright 2025. dsun all rights reserved.</Copyright>
     <PackageProjectUrl>https://github.com/MetaFrm/MetaFrm.Razor.Browser</PackageProjectUrl>
     <RepositoryUrl>https://github.com/MetaFrm/MetaFrm.Razor.Browser</RepositoryUrl>
-    <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ss:fffZ"))</SourceRevisionId>
-    <PackageIcon>icon.png</PackageIcon>
     <PackageTags>meta;framework;dotnet;maui;</PackageTags>
+    <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ss:fffZ"))</SourceRevisionId>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <Title>Meta Framework Razor Browser</Title>
+    <Product>Meta Framework Razor Browser</Product>
+    <Description>Meta Framework
+(Multi platform &amp; Meta management)</Description>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
@@ -39,8 +40,8 @@
     <SupportedPlatform Include="browser" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MetaFrm.Core.net9.0" Version="9.0.4.51" />
-    <PackageReference Include="MetaFrm.Razor.Essentials.net9.0" Version="9.0.4.51" />
+    <PackageReference Include="MetaFrm.Core.net9.0" Version="9.0.4.55" />
+    <PackageReference Include="MetaFrm.Razor.Essentials.net9.0" Version="9.0.4.55" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.7" />
   </ItemGroup>

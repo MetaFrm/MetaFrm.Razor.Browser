@@ -2,12 +2,15 @@
 
 namespace MetaFrm.Razor.Browser.Shared
 {
+    /// <summary>
+    /// Error
+    /// </summary>
     public partial class Error
     {
-        internal ErrorViewModel ErrorViewModel { get; set; } = new();
+        internal ErrorViewModel ErrorViewModel { get; set; } = new(null);
 
         /// <summary>
-        /// OnInitializedAsync
+        /// OnInitialized
         /// </summary>
         /// <returns></returns>
         protected override void OnInitialized()
@@ -17,6 +20,10 @@ namespace MetaFrm.Razor.Browser.Shared
             this.ErrorViewModel = this.CreateViewModel<ErrorViewModel>();
         }
 
+        /// <summary>
+        /// OnAfterRender
+        /// </summary>
+        /// <param name="firstRender"></param>
         protected override void OnAfterRender(bool firstRender)
         {
             base.OnAfterRender(firstRender);

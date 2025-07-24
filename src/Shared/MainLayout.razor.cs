@@ -9,9 +9,12 @@ using Microsoft.JSInterop;
 
 namespace MetaFrm.Razor.Browser.Shared
 {
+    /// <summary>
+    /// MainLayout
+    /// </summary>
     public partial class MainLayout : IDisposable
     {
-        internal MainLayoutViewModel MainLayoutViewModel { get; set; } = new();
+        internal MainLayoutViewModel MainLayoutViewModel { get; set; } = new(null);
 
         private bool isFirstLoad = true;
 
@@ -61,6 +64,9 @@ namespace MetaFrm.Razor.Browser.Shared
         private bool IsLogin { get; set; } = false;
         private string TemplateName { get; set; } = string.Empty;
 
+        /// <summary>
+        /// MainLayout
+        /// </summary>
         public MainLayout()
         {
             string tmp = this.GetType()?.FullName ?? "";
@@ -73,6 +79,9 @@ namespace MetaFrm.Razor.Browser.Shared
             }
         }
 
+        /// <summary>
+        /// OnInitialized
+        /// </summary>
         protected override void OnInitialized()
         {
             base.OnInitialized();
@@ -129,48 +138,60 @@ namespace MetaFrm.Razor.Browser.Shared
             }
         }
 
+        /// <summary>
+        /// OnAfterRender
+        /// </summary>
+        /// <param name="firstRender"></param>
         protected override void OnAfterRender(bool firstRender)
         {
             base.OnAfterRender(firstRender);
 
-            if (firstRender)
+            try
             {
-                this.InitScale();
-
-                if (this.MainLayoutViewModel.NavMenu != null && this.MainLayoutViewModel.NavMenu.Instance != null && this.MainLayoutViewModel.NavMenu.Instance is IAction action)
+                if (firstRender)
                 {
-                    action.Action -= MainLayout_Begin;
-                    action.Action += MainLayout_Begin;
+                    this.InitScale();
+
+                    if (this.MainLayoutViewModel.NavMenu != null && this.MainLayoutViewModel.NavMenu.Instance != null && this.MainLayoutViewModel.NavMenu.Instance is IAction action)
+                    {
+                        action.Action -= MainLayout_Begin;
+                        action.Action += MainLayout_Begin;
+                    }
+
+                    if (this.MainLayoutViewModel.CurrentPage != null && this.MainLayoutViewModel.CurrentPage.Instance != null && this.MainLayoutViewModel.CurrentPage.Instance is IAction action1 && this.MainLayoutViewModel.TmpBrowserType == null)
+                    {
+                        action1.Action -= MainLayout_Begin;
+                        action1.Action += MainLayout_Begin;
+                    }
+
+                    if (Factory.Platform != DevicePlatform.Web)
+                        this.HomeLoadAsync();
+
+                    if (this.CloudMessaging != null)
+                    {
+                        this.CloudMessaging.NotificationTappedEvent -= CloudMessaging_NotificationTappedEvent;
+                        this.CloudMessaging.NotificationTappedEvent += CloudMessaging_NotificationTappedEvent;
+                    }
+                }
+                else
+                {
+                    if (Factory.Platform == DevicePlatform.Web)
+                        this.HomeLoadAsync();
                 }
 
-                if (this.MainLayoutViewModel.CurrentPage != null && this.MainLayoutViewModel.CurrentPage.Instance != null && this.MainLayoutViewModel.CurrentPage.Instance is IAction action1 && this.MainLayoutViewModel.TmpBrowserType == null)
+                if (this.MainLayoutViewModel.CurrentPage != null && this.MainLayoutViewModel.CurrentPage.Instance != null && this.MainLayoutViewModel.CurrentPage.Instance is IAction action2
+                && this.MainLayoutViewModel.TmpBrowserType != null && this.MainLayoutViewModel.TmpBrowserType == this.MainLayoutViewModel.CurrentPageType)
                 {
-                    action1.Action -= MainLayout_Begin;
-                    action1.Action += MainLayout_Begin;
-                }
+                    action2.Action -= MainLayout_Begin;
+                    action2.Action += MainLayout_Begin;
 
-                if (Factory.Platform != DevicePlatform.Web)
-                    this.HomeLoadAsync();
-
-                if (this.CloudMessaging != null)
-                {
-                    this.CloudMessaging.NotificationTappedEvent -= CloudMessaging_NotificationTappedEvent;
-                    this.CloudMessaging.NotificationTappedEvent += CloudMessaging_NotificationTappedEvent;
+                    this.MainLayoutViewModel.TmpBrowserType = null;
                 }
             }
-            else
+            catch (Exception ex)
             {
-                if (Factory.Platform == DevicePlatform.Web)
-                    this.HomeLoadAsync();
-            }
-
-            if (this.MainLayoutViewModel.CurrentPage != null && this.MainLayoutViewModel.CurrentPage.Instance != null && this.MainLayoutViewModel.CurrentPage.Instance is IAction action2
-            && this.MainLayoutViewModel.TmpBrowserType != null && this.MainLayoutViewModel.TmpBrowserType == this.MainLayoutViewModel.CurrentPageType)
-            {
-                action2.Action -= MainLayout_Begin;
-                action2.Action += MainLayout_Begin;
-
-                this.MainLayoutViewModel.TmpBrowserType = null;
+                this.MainLayoutViewModel.TmpBrowserType = typeof(Error);
+                this.MainLayoutViewModel.CurrentPagePara = new Dictionary<string, object> { { "Parameter", ex } };
             }
         }
         private async void InitScale()
@@ -235,11 +256,18 @@ namespace MetaFrm.Razor.Browser.Shared
                 this.firstIsNavigationIntercepted = true;
         }
 
+        /// <summary>
+        /// Dispose
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)
@@ -357,9 +385,8 @@ namespace MetaFrm.Razor.Browser.Shared
                     case "ToastPara":
                         if (e.Value != null && e.Value is IToast toast1)
                         {
-                            this.MainLayoutViewModel.ToastPara = new Dictionary<string, object> { { "ToastMessage", toast1 } };
                             toast1.Show();
-                            this.StateHasChanged();
+                            this.MainLayoutViewModel.ToastPara = new Dictionary<string, object> { { "ToastMessage", toast1 } };
                         }
 
                         break;
@@ -368,7 +395,6 @@ namespace MetaFrm.Razor.Browser.Shared
                         {
                             this.MainLayoutViewModel.ModalPara = new Dictionary<string, object> { { "ModalMessage", modal1 } };
                             modal1.Show();
-                            this.StateHasChanged();
                         }
                         break;
 
@@ -376,7 +402,6 @@ namespace MetaFrm.Razor.Browser.Shared
                         if (e.Value != null && e.Value is string profileImage)
                         {
                             this.ProfileImage = profileImage;
-                            //this.StateHasChanged();
                         }
                         else
                             this.SearchProfileImage();
@@ -386,7 +411,6 @@ namespace MetaFrm.Razor.Browser.Shared
                         if (e.Value != null && e.Value is string displayInfo)
                         {
                             this.DisplayInfo = displayInfo;
-                            //this.StateHasChanged();
                         }
                         else
                             this.SearchDisplayInfo();
@@ -545,10 +569,10 @@ namespace MetaFrm.Razor.Browser.Shared
         {
             Response response;
 
+            if (this.MainLayoutViewModel.IsBusy) return;
+
             try
             {
-                if (this.MainLayoutViewModel.IsBusy) return;
-
                 this.MainLayoutViewModel.IsBusy = true;
 
                 bool isLogin = this.AuthState.IsLogin();
@@ -584,10 +608,10 @@ namespace MetaFrm.Razor.Browser.Shared
         {
             Response response;
 
+            if (this.MainLayoutViewModel.IsBusy) return;
+
             try
             {
-                if (this.MainLayoutViewModel.IsBusy) return;
-
                 this.MainLayoutViewModel.IsBusy = true;
 
                 bool isLogin = this.AuthState.IsLogin();
