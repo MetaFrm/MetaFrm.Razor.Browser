@@ -168,7 +168,7 @@
                             <!-- / Content -->
                             <!-- Footer -->
                             <footer class="content-footer footer bg-footer-theme">
-                                <div class="text-center px-1 mb-5">
+                                <div class="text-center px-1 mb-5 @($"{(Factory.DeviceInfo != null && Factory.DeviceInfo.Platform == Maui.Devices.DevicePlatform.iOS ? "pb-2" : "pb-1")}")">
                                     <div class="mb-2 mb-md-0">
                                         @((MarkupString)this.FooterInfo01)
                                         @((MarkupString)this.FooterInfo02)
