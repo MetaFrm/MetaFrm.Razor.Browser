@@ -115,12 +115,15 @@
                                                             <span class="align-middle">@Localization["프로필"]</span>
                                                         </a>
                                                     </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="javascript:void(0)" @onclick="this.OnSettingsClick">
-                                                            <i class="bx bx-cog me-2"></i>
-                                                            <span class="align-middle">@Localization["설정"]</span>
-                                                        </a>
-                                                    </li>
+                                                    @if (this.SettingsMenu.Count == 2)
+                                                    {
+                                                        <li>
+                                                            <a class="dropdown-item" href="javascript:void(0)" @onclick="this.OnSettingsClick">
+                                                                <i class="bx bx-cog me-2"></i>
+                                                                <span class="align-middle">@Localization["설정"]</span>
+                                                            </a>
+                                                        </li>
+                                                    }
                                                     @* <li>
                                             <a class="dropdown-item" href="javascript:void(0)">
                                             <span class="d-flex align-items-center align-middle">
@@ -168,7 +171,7 @@
                             <!-- / Content -->
                             <!-- Footer -->
                             <footer class="content-footer footer bg-footer-theme">
-                                <div class="text-center px-1 mb-5 @($"{(Factory.DeviceInfo != null && Factory.DeviceInfo.Platform == Maui.Devices.DevicePlatform.iOS ? "pb-2" : "pb-1")}")">
+                                <div class="text-center px-1 mb-5 @($"{(Factory.Platform == Maui.Devices.DevicePlatform.iOS ? "pb-2" : "pb-1")}")">
                                     <div class="mb-2 mb-md-0">
                                         @((MarkupString)this.FooterInfo01)
                                         @((MarkupString)this.FooterInfo02)

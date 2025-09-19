@@ -72,9 +72,7 @@ namespace MetaFrm.Razor.Browser.Shared
             string tmp = this.GetType()?.FullName ?? "";
             if (!tmp.IsNullOrEmpty())
             {
-                if (Factory.IsRegisterInstance(tmp))
-                    Factory.Dispose(Factory.CreateInstance(tmp));
-
+                Factory.LoadInstance(tmp)?.Dispose();
                 Factory.RegisterInstance(this, tmp);
             }
         }
@@ -196,18 +194,18 @@ namespace MetaFrm.Razor.Browser.Shared
         }
         private async void InitScale()
         {
-            if (this.LocalStorage != null && Factory.DeviceInfo != null && this.JSRuntime != null)
+            if (this.LocalStorage != null && this.JSRuntime != null)
             {
                 var scale = await this.LocalStorage.GetItemAsStringAsync("Viewport.Scale");
 
-                if (Factory.DeviceInfo.Platform == DevicePlatform.Android)
+                if (Factory.Platform == DevicePlatform.Android)
                 {
                     if (scale != null)
                         await this.JSRuntime.InvokeVoidAsync("InitAndroidViewportScale", $"", $"{scale:0.#}");
                     else
                         await this.JSRuntime.InvokeVoidAsync("InitAndroidViewportScale", $"", $"{2.0M:0.#}");
                 }
-                else if (Factory.DeviceInfo.Platform == DevicePlatform.iOS)
+                else if (Factory.Platform == DevicePlatform.iOS)
                 {
                     if (scale != null)
                         await this.JSRuntime.InvokeVoidAsync("SetViewportScale", $"", $"{scale:0.#}");
@@ -433,7 +431,7 @@ namespace MetaFrm.Razor.Browser.Shared
 
                             bool isLogin = this.AuthState.IsLogin();
 
-                            typeTitle = await Factory.GetDevelopmentTypeInfo(isLogin ? this.AuthState.Token() : null
+                            typeTitle = await DevelopmentService.GetTypeInfoAsync(isLogin ? this.AuthState.Token() : null
                                 , isLogin ? this.AuthState.UserID() : null
                                 , pairs[0], pairs[1], type);
 
@@ -526,24 +524,24 @@ namespace MetaFrm.Razor.Browser.Shared
         {
             if (!this.AuthState.IsLogin())
             {
-                this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Login" });
+                this.MainLayout_Begin(this, new() { Action = "Login" });
 
-                this.ActionEvent?.ActionEvnt(this, new() { Action = "Menu.Active", Value = new List<int> { 0, 0 } });
+                this.OnAction(this, new() { Action = "Menu.Active", Value = new List<int> { 0, 0 } });
             }
         }
         private void OnLogoutClick()
         {
             if (this.AuthState.IsLogin())
-                this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Logout" });
+                this.MainLayout_Begin(this, new () { Action = "Logout" });
         }
 
         private void OnProfileClick()
         {
             if (this.AuthState.IsLogin())
             {
-                this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Profile" });
+                this.MainLayout_Begin(this, new() { Action = "Profile" });
 
-                this.ActionEvent?.ActionEvnt(this, new() { Action = "Menu.Active", Value = new List<int> { 0, 0 } });
+                this.OnAction(this, new() { Action = "Menu.Active", Value = new List<int> { 0, 0 } });
             }
         }
 
@@ -551,11 +549,10 @@ namespace MetaFrm.Razor.Browser.Shared
         {
             if (this.AuthState.IsLogin() && this.SettingsMenu.Count == 2)
             {
-                this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Menu", Value = this.SettingsMenu });
+                this.MainLayout_Begin(this, new() { Action = "Menu", Value = this.SettingsMenu });
 
-                this.ActionEvent?.ActionEvnt(this, new() { Action = "Menu.Active", Value = this.SettingsMenu });
+                this.OnAction(this, new() { Action = "Menu.Active", Value = this.SettingsMenu });
             }
-
         }
 
         private async void OnLayoutMenuExpandeClick()
