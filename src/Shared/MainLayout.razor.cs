@@ -61,6 +61,8 @@ namespace MetaFrm.Razor.Browser.Shared
         private bool IsLoginView { get; set; } = true;
         private bool IsLoginShowMenu { get; set; } = false;
         private string PageCss { get; set; } = string.Empty;
+        private string NavCss { get; set; } = string.Empty;
+        private string ContentCss { get; set; } = string.Empty;
         private bool IsLogin { get; set; } = false;
         private string TemplateName { get; set; } = string.Empty;
 
@@ -112,6 +114,8 @@ namespace MetaFrm.Razor.Browser.Shared
                 this.IsLoginView = this.GetAttributeBool(nameof(this.IsLoginView));
                 this.IsLoginShowMenu = this.GetAttributeBool(nameof(this.IsLoginShowMenu));
                 this.PageCss = this.GetAttribute(nameof(this.PageCss));
+                this.NavCss = this.GetAttribute(nameof(this.NavCss));
+                this.ContentCss = this.GetAttribute(nameof(this.ContentCss));
                 string tmp = this.GetAttribute(nameof(this.SettingsMenu));
 
                 if (!tmp.IsNullOrEmpty() && tmp.Contains(','))
