@@ -1,0 +1,22 @@
+﻿@using MetaFrm.Control
+@inherits BaseComponent
+
+<h1 class="text-danger">@Localization["오류"]</h1>
+
+@if (this.ErrorViewModel != null && this.ErrorViewModel.IsDebug)
+{
+    <h2 class="text-danger">@Localization["요청을 처리하는 동안 오류가 발생했습니다."]</h2>
+    <p>
+        <strong>Message(@DateTime.Now.ToString("yyyy-MM-dd HH:mm")) : </strong> <code>@this.ErrorViewModel?.Message</code>
+    </p>
+    <div class="mb-3">
+        <textarea class="form-control textarea" rows="30" disabled readonly>@this.ErrorViewModel?.ExceptionToString</textarea>
+    </div>
+}
+else
+{
+    <h2 class="text-danger">@Localization["오류가 발생했습니다. 시스템 관리자에게 문의하세요."]</h2>
+    <p class="mt-4">
+        <strong>Message(@DateTime.Now.ToString("yyyy-MM-dd HH:mm")) : </strong> <code>@this.ErrorViewModel?.Message</code>
+    </p>
+}
