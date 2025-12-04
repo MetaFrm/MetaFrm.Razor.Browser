@@ -69,7 +69,7 @@ namespace MetaFrm.Razor.Browser.Shared
         /// <summary>
         /// MainLayout
         /// </summary>
-        public MainLayout()
+        public MainLayout(MetaFrm.Factory _)
         {
             string tmp = this.GetType()?.FullName ?? "";
             if (!tmp.IsNullOrEmpty())

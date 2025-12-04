@@ -1,8 +1,7 @@
 ﻿@using MetaFrm.Control
 @inherits BaseLayoutComponent
-@inject MetaFrm.Factory Factory
 
-<PageTitle>@Factory.ProjectService.ServiceName - @this.MainLayoutViewModel.Title</PageTitle>
+<PageTitle>@($"{Factory.ProjectService.ServiceName} - {this.MainLayoutViewModel.Title}")</PageTitle>
 
 <CascadingValue Value="this">
     @switch (this.TemplateName)
@@ -16,7 +15,7 @@
                 <main>
                     <article class="content px-2 mb-1">
                         <DynamicComponent Type="@this.MainLayoutViewModel.CurrentPageType" Parameters="this.MainLayoutViewModel.CurrentPagePara" @ref="this.MainLayoutViewModel.CurrentPage" />
-                        @*@Body*@
+                        @Body
                     </article>
                 </main>
             </div>
@@ -166,7 +165,7 @@
                             <!-- Content -->
                             <div class="container-xxl flex-grow-1 container-p-y" style="@this.ContentCss">
                                 <DynamicComponent Type="@this.MainLayoutViewModel.CurrentPageType" Parameters="this.MainLayoutViewModel.CurrentPagePara" @ref="this.MainLayoutViewModel.CurrentPage" />
-                                @*@Body*@
+                                @Body
                             </div>
                             <!-- / Content -->
                             <!-- Footer -->
