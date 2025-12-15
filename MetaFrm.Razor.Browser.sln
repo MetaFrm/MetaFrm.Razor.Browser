@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11205.157 d18.0
+VisualStudioVersion = 18.0.11205.157
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{FBE5211F-9DD2-428D-94A5-53EDE48FC640}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{42A66263-43FC-4CC3-BD7B-4481875DDE35}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\build_10.0.yml = .github\workflows\build_10.0.yml
-		.github\workflows\build_8.0.yml = .github\workflows\build_8.0.yml
-		.github\workflows\build_9.0.yml = .github\workflows\build_9.0.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7A11DB1D-8914-4474-86EC-48B7D10D78DC}"
@@ -33,10 +31,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "솔루션 항목", "솔루�
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetaFrm.Razor.Browser(net8.0)", "MetaFrm.Razor.Browser(net8.0)\MetaFrm.Razor.Browser(net8.0).csproj", "{795279A3-2FE0-4BA4-AD9F-5F68A9F6C497}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaFrm.Razor.Browser(net9.0)", "MetaFrm.Razor.Browser(net9.0)\MetaFrm.Razor.Browser(net9.0).csproj", "{F8824C63-C9C8-4153-9D34-D10AFEAA3664}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetaFrm.Razor.Browser(net10.0)", "MetaFrm.Razor.Browser(net10.0)\MetaFrm.Razor.Browser(net10.0).csproj", "{741B53EC-7CF5-356F-BCA2-100E04CD37A1}"
 EndProject
 Global
@@ -45,14 +39,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{795279A3-2FE0-4BA4-AD9F-5F68A9F6C497}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{795279A3-2FE0-4BA4-AD9F-5F68A9F6C497}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{795279A3-2FE0-4BA4-AD9F-5F68A9F6C497}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{795279A3-2FE0-4BA4-AD9F-5F68A9F6C497}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F8824C63-C9C8-4153-9D34-D10AFEAA3664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F8824C63-C9C8-4153-9D34-D10AFEAA3664}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F8824C63-C9C8-4153-9D34-D10AFEAA3664}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F8824C63-C9C8-4153-9D34-D10AFEAA3664}.Release|Any CPU.Build.0 = Release|Any CPU
 		{741B53EC-7CF5-356F-BCA2-100E04CD37A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{741B53EC-7CF5-356F-BCA2-100E04CD37A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{741B53EC-7CF5-356F-BCA2-100E04CD37A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
