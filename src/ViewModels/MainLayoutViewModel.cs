@@ -22,6 +22,10 @@ namespace MetaFrm.Razor.Browser.ViewModels
         /// </summary>
         public Type? CurrentPageType { get; set; }
         /// <summary>
+        /// CurrentPageHomeType
+        /// </summary>
+        public static Type? CurrentPageHomeType { get; set; }
+        /// <summary>
         /// CurrentPage
         /// </summary>
         public DynamicComponent? CurrentPage { get; set; }
@@ -71,7 +75,10 @@ namespace MetaFrm.Razor.Browser.ViewModels
                 NavMenuType = Factory.LoadType(this.GetAttribute("NavMenu"), null, true);
             //NavMenuType = typeof(MetaFrm.Razor.NavMenu);
 
-            this.CurrentPageType = Factory.LoadType(this.GetAttribute("Home"), null, true);
+            if (CurrentPageHomeType == null)
+                CurrentPageHomeType = Factory.LoadType(this.GetAttribute("Home"), null, true);
+
+            this.CurrentPageType = CurrentPageHomeType;
             //this.CurrentPageType = typeof(MetaFrm.Razor.Home);
 
             if (ToastType == null)
