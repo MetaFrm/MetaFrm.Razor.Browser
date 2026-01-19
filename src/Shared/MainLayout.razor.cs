@@ -72,7 +72,7 @@ namespace MetaFrm.Razor.Browser.Shared
         public MainLayout(Factory _)
         {
             string tmp = this.GetType()?.FullName ?? "";
-            if (!tmp.IsNullOrEmpty())
+            if (!string.IsNullOrEmpty(tmp))
             {
                 Factory.LoadInstance(tmp)?.Dispose();
                 Factory.RegisterInstance(this, tmp);
@@ -83,7 +83,7 @@ namespace MetaFrm.Razor.Browser.Shared
         /// OnInitialized
         /// </summary>
         protected override void OnInitialized()
-        {
+         {
             base.OnInitialized();
 
             this.MainLayoutViewModel = this.CreateViewModel<MainLayoutViewModel>();
@@ -118,7 +118,7 @@ namespace MetaFrm.Razor.Browser.Shared
                 this.ContentCss = this.GetAttribute(nameof(this.ContentCss));
                 string tmp = this.GetAttribute(nameof(this.SettingsMenu));
 
-                if (!tmp.IsNullOrEmpty() && tmp.Contains(','))
+                if (!string.IsNullOrEmpty(tmp) && tmp.Contains(','))
                 {
                     string[] tmps = tmp.Split(',');
                     this.SettingsMenu.Add(tmps[0].ToInt());
@@ -126,7 +126,7 @@ namespace MetaFrm.Razor.Browser.Shared
                 }
 
                 tmp = this.GetAttribute(nameof(this.HomeMenuAssemblyID));
-                if (!tmp.IsNullOrEmpty() && tmp.Contains(','))
+                if (!string.IsNullOrEmpty(tmp) && tmp.Contains(','))
                 {
                     string[] tmps = tmp.Split(',');
                     this.HomeMenuAssemblyID.Add(tmps[0].ToInt());
@@ -361,7 +361,7 @@ namespace MetaFrm.Razor.Browser.Shared
                         password = await this.LocalStorage.GetItemAsStringAsync("Login.Password");
                     }
 
-                    if (!this.IsLogin && !email.IsNullOrEmpty() && !password.IsNullOrEmpty())
+                    if (!this.IsLogin && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
                         this.MainLayout_Begin(this, new MetaFrmEventArgs { Action = "Login" });
                     else
                     {
