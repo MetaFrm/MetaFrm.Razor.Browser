@@ -198,9 +198,9 @@ namespace MetaFrm.Razor.Browser.Shared
         }
         private async void InitScale()
         {
-            if (this.LocalStorage != null && this.JSRuntime != null)
+            if (this.Local != null && this.JSRuntime != null)
             {
-                var scale = await this.LocalStorage.GetItemAsStringAsync("Viewport.Scale");
+                var scale = await this.Local.GetItemAsStringAsync("Viewport.Scale");
 
                 if (Factory.Platform == DevicePlatform.Android)
                 {
@@ -355,10 +355,10 @@ namespace MetaFrm.Razor.Browser.Shared
                 else
                 {
                     //로그인 안되어 있고 자동로그인 이면 로그인 화면으로
-                    if (this.LocalStorage != null)
+                    if (this.Local != null)
                     {
-                        email = await this.LocalStorage.GetItemAsStringAsync("Login.Email");
-                        password = await this.LocalStorage.GetItemAsStringAsync("Login.Password");
+                        email = await this.Local.GetItemAsStringAsync("Login.Email");
+                        password = await this.Local.GetItemAsStringAsync("Login.Password");
                     }
 
                     if (!this.IsLogin && !string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
