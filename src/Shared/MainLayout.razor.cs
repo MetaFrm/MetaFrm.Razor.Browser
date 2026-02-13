@@ -88,8 +88,7 @@ namespace MetaFrm.Razor.Browser.Shared
 
             this.MainLayoutViewModel = this.CreateViewModel<MainLayoutViewModel>();
 
-            if (this.Navigation != null)
-                this.Navigation.LocationChanged += Navigation_LocationChanged;
+            this.Navigation?.LocationChanged += Navigation_LocationChanged;
 
             try
             {
@@ -280,11 +279,9 @@ namespace MetaFrm.Razor.Browser.Shared
                 if (this.MainLayoutViewModel.CurrentPage != null && this.MainLayoutViewModel.CurrentPage.Instance != null && this.MainLayoutViewModel.CurrentPage.Instance is IAction action1 && this.MainLayoutViewModel.TmpBrowserType == null)
                     action1.Action -= MainLayout_Begin;
 
-                if (this.CloudMessaging != null)
-                    this.CloudMessaging.NotificationTappedEvent -= CloudMessaging_NotificationTappedEvent;
+                this.CloudMessaging?.NotificationTappedEvent -= CloudMessaging_NotificationTappedEvent;
 
-                if (this.ActionEvent != null)
-                    this.ActionEvent.Action -= MainLayout_Begin;
+                this.ActionEvent?.Action -= MainLayout_Begin;
 
                 if (this.Navigation != null)
                 {
@@ -580,7 +577,7 @@ namespace MetaFrm.Razor.Browser.Shared
 
                 ServiceData data = new()
                 {
-                    Token = isLogin ? this.AuthState.Token() : Factory.AccessKey
+                    Token = isLogin ? this.AuthState.Token() : Factory.ProjectService.Token
                 };
 
                 data["1"].CommandText = this.GetAttribute("SearchDisplayInfo");
@@ -619,7 +616,7 @@ namespace MetaFrm.Razor.Browser.Shared
 
                 ServiceData data = new()
                 {
-                    Token = isLogin ? this.AuthState.Token() : Factory.AccessKey
+                    Token = isLogin ? this.AuthState.Token() : Factory.ProjectService.Token
                 };
 
                 data["1"].CommandText = this.GetAttribute("SearchProfileImage");
