@@ -104,7 +104,7 @@ a, .btn-link {
 /* hover 시 표시 */
 .tooltip-container:hover .tooltip {
     left: 50%;
-    top: var(--tooltip-top);
+    top: 50%;
     opacity: 1;
     transform: translate(-50%, -4px);
     pointer-events: auto;
@@ -113,7 +113,7 @@ a, .btn-link {
 /* 클릭 토글 */
 .tooltip-trigger:focus + .tooltip {
     left: 50%;
-    top: var(--tooltip-top);
+    top: 50%;
     opacity: 1;
     transform: translate(-50%, -4px);
     pointer-events: auto;
