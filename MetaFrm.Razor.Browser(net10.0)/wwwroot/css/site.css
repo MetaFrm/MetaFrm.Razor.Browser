@@ -84,37 +84,117 @@ a, .btn-link {
 }
 
 /* 툴팁 기본 스타일 */
-.tooltip {
-    position: fixed;
-    left: 100%;
-    top: 100%;
-    transform: translateX(-50%);
-    width: 80vw; /* 화면 너비의 50% */
-    max-width: 800px;
-    padding: 10px 12px;
-    background: #333;
-    color: white;
-    border-radius: 6px;
-    word-break: break-word;
-    white-space: normal;
-    opacity: 0;
-    transition: opacity 0.2s;
+@media (max-width: 992px) {
+    .tooltip {
+        position: fixed;
+        left: 100%;
+        top: 100%;
+        /*transform: translateX(-30%);*/
+        width: 90%; /* 화면 너비의 50% */
+        max-width: 2400px;
+        padding: 10px 12px;
+        background: #333;
+        color: white;
+        border-radius: 6px;
+        word-break: break-word;
+        white-space: normal;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    /* hover 시 표시 */
+    .tooltip-container:hover .tooltip {
+        left: 5%;
+        top: 50%;
+        opacity: 1;
+        transform: translate(0%, -50%);
+        pointer-events: auto;
+    }
+
+    /* 클릭 토글 */
+    .tooltip-trigger:focus + .tooltip {
+        left: 5%;
+        top: 50%;
+        opacity: 1;
+        transform: translate(0%, -50%);
+        pointer-events: auto;
+    }
 }
 
-/* hover 시 표시 */
-.tooltip-container:hover .tooltip {
-    left: 50%;
-    top: 50%;
-    opacity: 1;
-    transform: translate(-50%, -4px);
-    pointer-events: auto;
+@media (min-width: 993px) {
+    .tooltip {
+        position: fixed;
+        left: 100%;
+        top: 100%;
+        /*transform: translateX(-30%);*/
+        width: 90%; /* 화면 너비의 50% */
+        max-width: 2400px;
+        padding: 10px 12px;
+        background: #333;
+        color: white;
+        border-radius: 6px;
+        word-break: break-word;
+        white-space: normal;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    /* hover 시 표시 */
+    .tooltip-container:hover .tooltip {
+        left: calc(10%);
+        top: 50%;
+        width: calc(80%); /* 화면 너비의 50% */
+        opacity: 1;
+        transform: translate(0%, -50%);
+        pointer-events: auto;
+    }
+
+    /* 클릭 토글 */
+    .tooltip-trigger:focus + .tooltip {
+        left: calc(10%);
+        top: 50%;
+        width: calc(80%); /* 화면 너비의 50% */
+        opacity: 1;
+        transform: translate(0%, -50%);
+        pointer-events: auto;
+    }
 }
 
-/* 클릭 토글 */
-.tooltip-trigger:focus + .tooltip {
-    left: 50%;
-    top: 50%;
-    opacity: 1;
-    transform: translate(-50%, -4px);
-    pointer-events: auto;
+@media (min-width: 1200px) {
+    .tooltip {
+        position: fixed;
+        left: 100%;
+        top: 100%;
+        /*transform: translateX(-30%);*/
+        width: 90%; /* 화면 너비의 50% */
+        max-width: 2400px;
+        padding: 10px 12px;
+        background: #333;
+        color: white;
+        border-radius: 6px;
+        word-break: break-word;
+        white-space: normal;
+        opacity: 0;
+        transition: opacity 0.2s;
+    }
+
+    /* hover 시 표시 */
+    .tooltip-container:hover .tooltip {
+        left: calc(260px + 10%);
+        top: 50%;
+        width: calc(260px + 40%); /* 화면 너비의 50% */
+        opacity: 1;
+        transform: translate(0%, -50%);
+        pointer-events: auto;
+    }
+
+    /* 클릭 토글 */
+    .tooltip-trigger:focus + .tooltip {
+        left: calc(260px + 10%);
+        top: 50%;
+        width: calc(260px + 40%); /* 화면 너비의 50% */
+        opacity: 1;
+        transform: translate(0%, -50%);
+        pointer-events: auto;
+    }
 }
