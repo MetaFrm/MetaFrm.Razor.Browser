@@ -1,4 +1,5 @@
 ﻿@using MetaFrm.Control
+@using MetaFrm.Razor.Essentials
 @inherits BaseLayoutComponent
 
 <PageTitle>@($"{Factory.ProjectService.ServiceName} - {this.MainLayoutViewModel.Title}")</PageTitle>
@@ -55,6 +56,18 @@
                                 <div class="navbar-nav align-items-center">
                                     <div class="nav-item d-flex align-items-center">
                                         @((MarkupString)this.DisplayInfo)
+                                        <AuthorizeView>
+                                            <Authorized>
+                                                @if (!string.IsNullOrEmpty(this.DisplayInfoTooltip))
+                                                {
+                                                    <Tooltip>
+                                                        <Text>
+                                                            @((MarkupString)this.DisplayInfoTooltip)
+                                                        </Text>
+                                                    </Tooltip>
+                                                }
+                                            </Authorized>
+                                        </AuthorizeView>
                                     </div>
                                 </div>
 
@@ -84,7 +97,7 @@
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     <li>
-                                                        <a class="dropdown-item" href="javascript:void(0)">
+                                                        <a class="dropdown-item" href="javascript:void(0)" @onclick="this.OnProfileClick">
                                                             <div class="d-flex">
                                                                 <div class="flex-shrink-0 me-3">
                                                                     <div class="avatar avatar-online">

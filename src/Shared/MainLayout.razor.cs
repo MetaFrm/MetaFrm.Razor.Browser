@@ -50,6 +50,7 @@ namespace MetaFrm.Razor.Browser.Shared
 
         private bool BackButtonPressedPageBackward { get; set; } = true;
         private string DisplayInfo { get; set; } = string.Empty;
+        private string DisplayInfoTooltip { get; set; } = string.Empty;
         private string ProfileImage { get; set; } = string.Empty;
         private string FooterInfo01 { get; set; } = string.Empty;
         private string FooterInfo02 { get; set; } = string.Empty;
@@ -106,6 +107,7 @@ namespace MetaFrm.Razor.Browser.Shared
             {
                 this.BackButtonPressedPageBackward = this.GetAttributeBool(nameof(this.BackButtonPressedPageBackward));
                 this.Copyright = this.GetAttribute(nameof(this.Copyright));
+                this.DisplayInfoTooltip = this.GetAttribute(nameof(this.DisplayInfoTooltip));
                 this.FooterInfo01 = this.GetAttribute(nameof(this.FooterInfo01));
                 this.FooterInfo02 = this.GetAttribute(nameof(this.FooterInfo02));
                 this.FooterInfo03 = this.GetAttribute(nameof(this.FooterInfo03));
